@@ -40,6 +40,7 @@
     if (!chatController) chatController = [ChatController new];
     chatController.delegate = self;
     chatController.chatTitle = @"Simple Chat";
+    chatController.opponentImg = [UIImage imageNamed:@"tempUser.png"];
     [self presentViewController:chatController animated:YES completion:nil];
 }
 
