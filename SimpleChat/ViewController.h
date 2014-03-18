@@ -12,5 +12,6 @@
 
 @interface ViewController : UIViewController <ChatControllerDelegate>
 
+@property (strong, nonatomic) ChatController * chatController;
 
 @end

@@ -9,9 +9,6 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-{
-    ChatController * chatController;
-}
 
 @end
 
@@ -37,11 +34,11 @@
 
 - (void) handleTap:(UITapGestureRecognizer *)tap {
     
-    if (!chatController) chatController = [ChatController new];
-    chatController.delegate = self;
-    chatController.chatTitle = @"Simple Chat";
-    chatController.opponentImg = [UIImage imageNamed:@"tempUser.png"];
-    [self presentViewController:chatController animated:YES completion:nil];
+    if (!_chatController) _chatController = [ChatController new];
+    _chatController.delegate = self;
+    _chatController.chatTitle = @"Simple Chat";
+    _chatController.opponentImg = [UIImage imageNamed:@"tempUser.png"];
+    [self presentViewController:_chatController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,7 +57,7 @@
     newMessageOb[kMessageContent] = messageString;
     
     // Add Message Right To Collection
-    [chatController addNewMessage:newMessageOb];
+    [_chatController addNewMessage:newMessageOb];
 }
 
 /* Optional
