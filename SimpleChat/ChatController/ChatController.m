@@ -8,6 +8,7 @@
 
 #import "ChatController.h"
 #import "MessageCell.h"
+#import "MyMacros.h"
 
 static NSString * kMessageCellReuseIdentifier = @"MessageCell";
 static int connectionStatusViewTag = 1701;
@@ -43,8 +44,6 @@ static int chatInputStartingHeight = 40;
         _topBar.title = @"Chat Controller";
         _topBar.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
         _topBar.delegate = self;
-        _topBar.leftIcon = kIconPrevious;
-        // _topBar.rightIcon = kIconMore;
         
         // ChatInput
         _chatInput = [[ChatInput alloc]init];
@@ -59,7 +58,7 @@ static int chatInputStartingHeight = 40;
         flow.scrollDirection = UICollectionViewScrollDirectionVertical;
         flow.minimumLineSpacing = 6;
         
-        CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
+        CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - chatInputStartingHeight) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
         _myCollectionView = [[UICollectionView alloc]initWithFrame:myFrame collectionViewLayout:flow];
         //_myCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _myCollectionView.backgroundColor = [UIColor whiteColor];
