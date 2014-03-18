@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+#import "ChatController.h"
+
+@interface ViewController : UIViewController <ChatControllerDelegate>
+
 
 @end
