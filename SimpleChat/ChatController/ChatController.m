@@ -8,10 +8,10 @@
 
 #import "ChatController.h"
 #import "MessageCell.h"
-#import "MyMacros.h"
 
 static NSString * kMessageCellReuseIdentifier = @"MessageCell";
 static int connectionStatusViewTag = 1701;
+static int chatInputStartingHeight = 40;
 
 @interface ChatController ()
 
@@ -43,6 +43,8 @@ static int connectionStatusViewTag = 1701;
         _topBar.title = @"Chat Controller";
         _topBar.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
         _topBar.delegate = self;
+        _topBar.leftIcon = kIconPrevious;
+        // _topBar.rightIcon = kIconMore;
         
         // ChatInput
         _chatInput = [[ChatInput alloc]init];
@@ -142,7 +144,7 @@ static int connectionStatusViewTag = 1701;
 }
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [_chatInput isRotating];
-    _myCollectionView.frame = (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
+    _myCollectionView.frame = (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - chatInputStartingHeight);
     [_myCollectionView reloadData];
 }
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -373,17 +375,9 @@ static int connectionStatusViewTag = 1701;
     NSMutableDictionary * message = _messagesArray[[indexPath indexAtPosition:1]];
     if (!message[kMessageRuntimeSentBy]) {
         
-        // ** INSERT CUSTOM SENT BY LOGIC HERE ** //
-        
-        
-        // **   DEMO   ** //
-        
-        // Just for demonstration, we are randomly assigning messages sentBy property
+        // Random just for now, set at runtime
         int sentByNumb = arc4random() % 2;
         message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:(sentByNumb == 0) ? kSentByOpponent : kSentByUser];
-        
-        // ** END DEMO ** //
-        
     }
     
     // Set the cell
