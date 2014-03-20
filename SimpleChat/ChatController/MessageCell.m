@@ -7,6 +7,12 @@
 //
 
 
+/*
+ Mozilla Public License
+ Version 2.0
+ */
+
+
 #import "MessageCell.h"
 #import "MyMacros.h"
 // External Constants

@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 Logan Wright. All rights reserved.
 //
 
+
+/*
+ Mozilla Public License
+ Version 2.0
+ */
+
+
 #import "ChatController.h"
 #import "MessageCell.h"
 #import "MyMacros.h"

@@ -6,6 +6,13 @@
 //  Copyright (c) 2013 Logan Wright. All rights reserved.
 //
 
+
+/*
+ Mozilla Public License
+ Version 2.0
+ */
+
+
 #import "TopBar.h"
 #import "MyMacros.h"
 

@@ -27,6 +27,7 @@
 		809B50CC18D80E040032A48D /* Previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 809B50C618D80E040032A48D /* Previous.png */; };
 		809B50CD18D80E040032A48D /* TopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B50C818D80E040032A48D /* TopBar.m */; };
 		809B50CF18D814AC0032A48D /* tempUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 809B50CE18D814AC0032A48D /* tempUser.png */; };
+		809B51A618DABBA90032A48D /* License in Resources */ = {isa = PBXBuildFile; fileRef = 809B51A518DABBA90032A48D /* License */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		809B50C718D80E040032A48D /* TopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopBar.h; sourceTree = "<group>"; };
 		809B50C818D80E040032A48D /* TopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopBar.m; sourceTree = "<group>"; };
 		809B50CE18D814AC0032A48D /* tempUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tempUser.png; sourceTree = "<group>"; };
+		809B51A518DABBA90032A48D /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +186,7 @@
 				809B50C418D80E040032A48D /* MessageCell.m */,
 				809B50C518D80E040032A48D /* MyMacros.h */,
 				809B50C618D80E040032A48D /* Previous.png */,
+				809B51A518DABBA90032A48D /* License */,
 			);
 			path = ChatController;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				809B51A618DABBA90032A48D /* License in Resources */,
 				809B50CC18D80E040032A48D /* Previous.png in Resources */,
 				809B508318D7B55B0032A48D /* Images.xcassets in Resources */,
 				809B507518D7B55B0032A48D /* InfoPlist.strings in Resources */,
@@ -498,6 +502,7 @@
 				809B509B18D7B55B0032A48D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		809B509C18D7B55B0032A48D /* Build configuration list for PBXNativeTarget "SimpleChatTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +511,7 @@
 				809B509E18D7B55B0032A48D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -6,6 +6,13 @@
 //  Copyright (c) 2013 Logan Wright. All rights reserved.
 //
 
+
+/*
+ Mozilla Public License
+ Version 2.0
+ */
+
+
 #import <UIKit/UIKit.h>
 
 @protocol TopBarDelegate
