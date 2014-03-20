@@ -29,7 +29,7 @@
 // -- CUSTOMIZATION PROPERTIES -- //
 
 /*!
- Set text property to show placeholder -- include two spaces at front of string
+ Set text property to show placeholder
  */
 @property (strong, nonatomic) UILabel * placeholderLabel;
 /*!

@@ -10,21 +10,24 @@
 #import "TopBar.h"
 #import "ChatInput.h"
 
+// Message Dictionary Keys
 FOUNDATION_EXPORT NSString * const kMessageSize;
 FOUNDATION_EXPORT NSString * const kMessageContent;
 FOUNDATION_EXPORT NSString * const kMessageRuntimeSentBy;
+
+@class ChatController;
 
 @protocol ChatControllerDelegate
 
 /*!
  User has sent a new message
  */
-@required - (void) sendNewMessage:(NSString *)messageString;
+@required - (void) chatController:(ChatController *)chatController didSendMessage:(NSString *)messageString;
 
 /*!
  Close Chat Controller - Will Dismiss If Nothing Selected
  */
-@optional - (void) closeChatController;
+@optional - (void) closeChatController:(ChatController *)chatController;
 
 @end
 

@@ -58,7 +58,8 @@ static int chatInputStartingHeight = 40;
         flow.scrollDirection = UICollectionViewScrollDirectionVertical;
         flow.minimumLineSpacing = 6;
         
-        CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - chatInputStartingHeight) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
+        // Set Up CollectionView
+        CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
         _myCollectionView = [[UICollectionView alloc]initWithFrame:myFrame collectionViewLayout:flow];
         //_myCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _myCollectionView.backgroundColor = [UIColor whiteColor];
@@ -71,6 +72,7 @@ static int chatInputStartingHeight = 40;
         [_myCollectionView registerClass:[MessageCell class]
               forCellWithReuseIdentifier:kMessageCellReuseIdentifier];
         
+        // Register Keyboard Notifications
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -154,18 +156,22 @@ static int chatInputStartingHeight = 40;
 #pragma mark CHAT INPUT DELEGATE
 
 - (void) chatInputNewMessageSent:(NSString *)messageString {
-    if ([(NSObject *)_delegate respondsToSelector:@selector(sendNewMessage:)]) {
-        [_delegate sendNewMessage:messageString];
+    if ([(NSObject *)_delegate respondsToSelector:@selector(chatController:didSendMessage:)]) {
+        [_delegate chatController:self didSendMessage:messageString];
+    }
+    else {
+        NSLog(@"ChatController: ** DELEGATE OR PROTOCOL METHOD NOT SET ** ");
     }
 }
 
 #pragma mark TOP BAR DELEGATE
 
 - (void) topLeftPressed {
-    if ([(NSObject *)_delegate respondsToSelector:@selector(closeChatController)]) {
-        [_delegate closeChatController];
+    if ([(NSObject *)_delegate respondsToSelector:@selector(closeChatController:)]) {
+        [_delegate closeChatController:self];
     }
     else {
+        NSLog(@"ChatController: AutoClosing");
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -393,6 +399,12 @@ static int chatInputStartingHeight = 40;
 
 - (void) setMessagesArray:(NSMutableArray *)messagesArray {
     _messagesArray = messagesArray;
+    
+    // Fix if we receive Null
+    if (![_messagesArray.class isSubclassOfClass:[NSArray class]]) {
+        _messagesArray = [NSMutableArray new];
+    }
+    
     [_myCollectionView reloadData];
 }
 

@@ -352,7 +352,7 @@
     // Get Keyboard Height
     NSValue* keyboardFrameBegin = [keyboardAnimationDetail valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    // Compensate For Orientation
+    
     UIInterfaceOrientation myOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (UIInterfaceOrientationIsPortrait(myOrientation)) currentKeyboardHeight = keyboardFrameBeginRect.size.height;
     else currentKeyboardHeight = keyboardFrameBeginRect.size.width;

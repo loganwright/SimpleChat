@@ -36,7 +36,6 @@
     
     if (!_chatController) _chatController = [ChatController new];
     _chatController.delegate = self;
-    _chatController.chatTitle = @"Simple Chat";
     _chatController.opponentImg = [UIImage imageNamed:@"tempUser.png"];
     [self presentViewController:_chatController animated:YES completion:nil];
 }
@@ -50,7 +49,13 @@
 
 #pragma mark CHAT CONTROLLER DELEGATE
 
-- (void) sendNewMessage:(NSString *)messageString {
+- (void) chatController:(ChatController *)chatController didSendMessage:(NSString *)messageString {
+    NSLog(@"Send message:%@", messageString);
+    
+    [self addNewMessageToChat:messageString];
+}
+
+- (void) addNewMessageToChat:(NSString *)messageString {
     
     // Received String -- > Convert to message to send ...
     NSMutableDictionary * newMessageOb = [NSMutableDictionary new];

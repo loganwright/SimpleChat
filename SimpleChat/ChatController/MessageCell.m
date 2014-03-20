@@ -9,13 +9,21 @@
 
 #import "MessageCell.h"
 #import "MyMacros.h"
-
 // External Constants
 int const outlineSpace = 22; // 11 px on each side for border
 int const maxBubbleWidth = 260; // Max Bubble Size
 // Message Dict Keys
 NSString * const kMessageSize = @"size";
+
+#if defined(__has_include)
+#if __has_include("FSChatManager.h")
+static NSString * kMessageContent = @"content";
+#else
 NSString * const kMessageContent = @"content";
+#endif
+#else
+#endif
+
 NSString * const kMessageRuntimeSentBy = @"runtimeSentBy";
 
 // Instance Level Constants
