@@ -56,18 +56,6 @@ import <UIKit/UIKit.h>
 ```ObjC
 if (!_chatController) _chatController = [ChatController new];
 _chatController.delegate = self;
-
-// If you'd like to open with existing messages, you could do this:
-
-// _chatController.messages = someArrayOfMessages;
-
-/*
-
-Messages are dictionaries.  The text to display should be stored with the key `kMessageContent'
-
-*/
-
-
 [self presentViewController:_chatController animated:YES completion:nil];
 ```    
     
@@ -80,6 +68,16 @@ _chatController.delegate = self;
 
 // add this
 _chatController.messages = // some array of MessageOb Objects
+
+
+/*
+
+Messages are dictionaries.  The text to display should be stored with the key `kMessageContent'
+
+You can also store custom data here to pass into the controllerIf you'd like.  Particularly useful for figuring out who sent the message (see below)
+
+*/
+
 
 [self presentViewController:_chatController animated:YES completion:nil];
 ```
