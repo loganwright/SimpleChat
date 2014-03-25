@@ -56,6 +56,18 @@ import <UIKit/UIKit.h>
 ```ObjC
 if (!_chatController) _chatController = [ChatController new];
 _chatController.delegate = self;
+
+// If you'd like to open with existing messages, you could do this:
+
+// _chatController.messages = someArrayOfMessages;
+
+/*
+
+Messages are dictionaries.  The text to display should be stored with the key `kMessageContent'
+
+*/
+
+
 [self presentViewController:_chatController animated:YES completion:nil];
 ```    
     
@@ -71,3 +83,31 @@ _chatController.messages = // some array of MessageOb Objects
 
 [self presentViewController:_chatController animated:YES completion:nil];
 ```
+
+####Step 4: Customize SentBy Logic
+
+- In ChatController.m, find this section:
+
+if (!message[kMessageRuntimeSentBy]) {
+        
+    // Random just for now, set at runtime
+    int sentByNumb = arc4random() % 2;
+    message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:(sentByNumb == 0) ? kSentByOpponent : kSentByUser];
+
+}
+
+It is currently set to random, just so you can see how the conversation would look hypothetically. You should replace this with your own custom logic, for instance, you could create a currentUserId property and add a sentBy key to your message dictionaries and do this:
+
+if (!message[kMessageRuntimeSentBy]) {
+        
+    // See if the sentBy associated with the message matches our currentUserId
+    if ([_currentUserId isEqualToString:message[@"sentByUserId"]]) {
+        message[kMessageRuntimeSentBy = [NSNumber numberWithInt:kSentByUser];
+    }
+    else {
+        message[kMessageRuntimeSentBy = [NSNumber numberWithInt:kSentByOpponent];
+    }
+
+}
+
+
