@@ -137,9 +137,9 @@ if (!message[kMessageRuntimeSentBy]) {
 @property (strong, nonatomic) NSString * chatTitle;
 ```
 ###Status Notifications
-```ObjC
-You can run these if you'd like to notify the user that their connection to the server is inactive.  Call isOffline to show the notification, call isOnline to hide it.  It is safe to call these repeatedly.
 
+You can run these if you'd like to notify the user that their connection to the server is inactive.  Call isOffline to show the notification, call isOnline to hide it.  It is safe to call these repeatedly.
+```ObjC
 /*!
  Notify UI that user is: Offline
  */
