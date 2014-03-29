@@ -61,7 +61,7 @@ If you'd like to show this on the UI, you'll need to pass it back into the contr
 }
 ```
 
-This gives me the opportunity to do things like validate the message, assign a sent by, sent to, set a timestamp, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.
+This gives you the opportunity to do things like validate the message, assign a sent by, sent to, set a timestamp, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.
 
 ####Step 4: Launch
 
@@ -135,9 +135,9 @@ if (!message[kMessageRuntimeSentBy]) {
  To set the title
  */
 @property (strong, nonatomic) NSString * chatTitle;
-
+```
 ###Status Notifications
-
+```ObjC
 You can run these if you'd like to notify the user that their connection to the server is inactive.  Call isOffline to show the notification, call isOnline to hide it.  It is safe to call these repeatedly.
 
 /*!
