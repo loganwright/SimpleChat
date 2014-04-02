@@ -17,10 +17,11 @@
 #import "TopBar.h"
 #import "ChatInput.h"
 
-// Message Dictionary Keys
+// Message Dictionary Keys (defined in MessageCell)
 FOUNDATION_EXPORT NSString * const kMessageSize;
 FOUNDATION_EXPORT NSString * const kMessageContent;
 FOUNDATION_EXPORT NSString * const kMessageRuntimeSentBy;
+FOUNDATION_EXPORT NSString * const kMessageTimestamp;
 
 @class ChatController;
 
@@ -29,7 +30,7 @@ FOUNDATION_EXPORT NSString * const kMessageRuntimeSentBy;
 /*!
  User has sent a new message
  */
-@required - (void) chatController:(ChatController *)chatController didSendMessage:(NSString *)messageString;
+@required - (void) chatController:(ChatController *)chatController didSendMessage:(NSMutableDictionary *)message;
 
 /*!
  Close Chat Controller - Will Dismiss If Nothing Selected
@@ -53,7 +54,7 @@ FOUNDATION_EXPORT NSString * const kMessageRuntimeSentBy;
  */
 @property (strong, nonatomic) UIColor * opponentBubbleColor;
 /*!
- Change Overall Tint (send btn, top bar, and opponent bubbles)
+ Change Overall Tint (send btn, & top bar)
  */
 @property (strong, nonatomic) UIColor * tintColor;
 
@@ -71,12 +72,17 @@ FOUNDATION_EXPORT NSString * const kMessageRuntimeSentBy;
  */
 @property (strong, nonatomic) NSMutableArray * messagesArray;
 
+/*!
+ The current user's Id - This is not currently in use, it is put here for an example use
+ */
+@property (strong, nonatomic) NSString * currentUserId;
+
 #pragma mark ADD NEW MESSAGE
 
 /*!
  Add new message to view
  */
-- (void) addNewMessage:(NSMutableDictionary *)message;
+- (void) addNewMessage:(NSDictionary *)message;
 
 #pragma mark CONNECTION UI NOTIFICATIONS
 

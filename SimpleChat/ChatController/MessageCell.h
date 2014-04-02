@@ -30,11 +30,11 @@ FOUNDATION_EXPORT int const maxBubbleWidth;
 // Message Dictionary Keys
 FOUNDATION_EXPORT NSString * const kMessageSize;
 FOUNDATION_EXPORT NSString * const kMessageRuntimeSentBy;
-
 #if defined(__has_include)
 #if __has_include("FSChatManager.h")
-
+// (namespace)
 #else
+FOUNDATION_EXPORT NSString * const kMessageTimestamp;
 FOUNDATION_EXPORT NSString * const kMessageContent;
 #endif
 #else

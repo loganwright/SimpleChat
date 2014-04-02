@@ -15,22 +15,26 @@
 
 #import "MessageCell.h"
 #import "MyMacros.h"
+
 // External Constants
 int const outlineSpace = 22; // 11 px on each side for border
 int const maxBubbleWidth = 260; // Max Bubble Size
+
 // Message Dict Keys
 NSString * const kMessageSize = @"size";
+NSString * const kMessageRuntimeSentBy = @"runtimeSentBy";
 
-#if defined(__has_include)
+#if defined(__has_include) 
+// (namespace)
 #if __has_include("FSChatManager.h")
 static NSString * kMessageContent = @"content";
+static NSString * kMessageTimestamp = @"timestamp";
 #else
 NSString * const kMessageContent = @"content";
+NSString * const kMessageTimestamp = @"timestamp"; // Will eventually be used to access & display timestamps 
 #endif
 #else
 #endif
-
-NSString * const kMessageRuntimeSentBy = @"runtimeSentBy";
 
 // Instance Level Constants
 static int offsetX = 6; // 6 px from each side

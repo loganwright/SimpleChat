@@ -21,4 +21,6 @@ static inline CGFloat height(UIView *view) { return view.frame.size.height; }
 static inline int ScreenHeight(){ return [UIScreen mainScreen].bounds.size.height; }
 static inline int ScreenWidth(){ return [UIScreen mainScreen].bounds.size.width; }
 
+static inline NSString * TimeStamp() {return [NSString stringWithFormat:@"%f",[[NSDate new] timeIntervalSince1970] * 1000];}
+
 #endif

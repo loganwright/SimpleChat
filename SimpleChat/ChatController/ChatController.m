@@ -21,6 +21,7 @@ static NSString * kMessageCellReuseIdentifier = @"MessageCell";
 static int connectionStatusViewTag = 1701;
 static int chatInputStartingHeight = 40;
 
+
 @interface ChatController ()
 
 {
@@ -163,8 +164,13 @@ static int chatInputStartingHeight = 40;
 #pragma mark CHAT INPUT DELEGATE
 
 - (void) chatInputNewMessageSent:(NSString *)messageString {
+    
+    NSMutableDictionary * newMessageOb = [NSMutableDictionary new];
+    newMessageOb[kMessageContent] = messageString;
+    newMessageOb[kMessageTimestamp] = TimeStamp();
+    
     if ([(NSObject *)_delegate respondsToSelector:@selector(chatController:didSendMessage:)]) {
-        [_delegate chatController:self didSendMessage:messageString];
+        [_delegate chatController:self didSendMessage:newMessageOb];
     }
     else {
         NSLog(@"ChatController: ** DELEGATE OR PROTOCOL METHOD NOT SET ** ");
@@ -193,7 +199,7 @@ static int chatInputStartingHeight = 40;
 
 #pragma mark ADD NEW MESSAGE
 
-- (void) addNewMessage:(NSMutableDictionary *)message {
+- (void) addNewMessage:(NSDictionary *)message {
     
     if (_messagesArray == nil)  _messagesArray = [NSMutableArray new];
     
@@ -390,6 +396,16 @@ static int chatInputStartingHeight = 40;
         // Random just for now, set at runtime
         int sentByNumb = arc4random() % 2;
         message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:(sentByNumb == 0) ? kSentByOpponent : kSentByUser];
+        
+        /* EXAMPLE IMPLEMENTATION
+         // See if the sentBy associated with the message matches our currentUserId
+         if ([_currentUserId isEqualToString:message[@"sentByUserId"]]) {
+            message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:kSentByUser];
+         }
+         else {
+            message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:kSentByOpponent];
+         }
+         */
     }
     
     // Set the cell
@@ -423,7 +439,6 @@ static int chatInputStartingHeight = 40;
 - (void) setTintColor:(UIColor *)tintColor {
     _chatInput.sendBtnActiveColor = tintColor;
     _topBar.tintColor = tintColor;
-    _opponentBubbleColor = tintColor;
     _tintColor = tintColor;
 }
 

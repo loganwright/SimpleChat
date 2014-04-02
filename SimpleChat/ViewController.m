@@ -49,21 +49,19 @@
 
 #pragma mark CHAT CONTROLLER DELEGATE
 
-- (void) chatController:(ChatController *)chatController didSendMessage:(NSString *)messageString {
-    NSLog(@"Send message:%@", messageString);
+- (void) chatController:(ChatController *)chatController didSendMessage:(NSMutableDictionary *)message {
+    // Messages come prepackaged with the contents of the message and a timestamp in milliseconds
+    NSLog(@"Message Contents: %@", message[kMessageContent]);
+    NSLog(@"Timestamp: %@", message[kMessageTimestamp]);
     
-    [self addNewMessageToChat:messageString];
+    // Evaluate or add to the message here for example, if we wanted to assign the current userId:
+    message[@"sentByUserId"] = @"currentUserId";
+    
+    // Must add message to controller for it to show
+    [_chatController addNewMessage:message];
 }
 
-- (void) addNewMessageToChat:(NSString *)messageString {
-    
-    // Received String -- > Convert to message to send ...
-    NSMutableDictionary * newMessageOb = [NSMutableDictionary new];
-    newMessageOb[kMessageContent] = messageString;
-    
-    // Add Message Right To Collection
-    [_chatController addNewMessage:newMessageOb];
-}
+
 
 /* Optional
 - (void) closeChatController {

@@ -1,7 +1,7 @@
 SimpleChat
 ==========
 
-An Easy To Use Bubble Chat UI Alternative
+An easy to use bubble chat UI as an alternative to the traditional iOS talk bubbles.
 
 <p align="center">
   <img src="http://i.stack.imgur.com/OrRIO.png?raw=true"><img />
@@ -33,32 +33,26 @@ import <UIKit/UIKit.h>
 @end
 ```
 
-####Step 3: Add Delegate Method & Convenience Sender
+####Step 3: Add Delegate Method
 
-Whenever the user sends a message from inside of the ChatController, it will pass a string to the delegate.
-If you'd like to show this on the UI, you'll need to pass it back into the controller, like below.
+Whenever the user sends a message from inside of the ChatController, it will pass the message to the delegate as a dictionary.
+If you'd like to show this on the UI, you'll need to pass it back into the controller, like below.  
 
 ```ObjC
 
 // Will be called when user presses send
-- (void) chatController:(ChatController *)chatController didSendMessage:(NSString *)messageString {
-    NSLog(@"Send message:%@", messageString);
+- (void) chatController:(ChatController *)chatController didSendMessage:(NSMutableDictionary *)message {
+    // Messages come prepackaged with the contents of the message and a timestamp in milliseconds
+    NSLog(@"Message Contents: %@", message[kMessageContent]);
+    NSLog(@"Timestamp: %@", message[kMessageTimestamp]);
     
-    // We must add the message to the chat if we want to see it
-    [self addNewMessageToChat:messageString];
+    // Evaluate or add to the message here for example, if we wanted to assign the current userId:
+    message[@"sentByUserId"] = @"currentUserId";
+    
+    // Must add message to controller for it to show
+    [_chatController addNewMessage:message];
 }
 
-// Just a convenience method to add messageString to messageObject
-// This looks pointless now because all we see is a string; however, you will likely want to pass additional parameters along with the message (ie: timestamp, sentBy, sentFrom, etc...)
-- (void) addNewMessageToChat:(NSString *)messageString {
-
-    // Received String -- > Convert to message to send ...
-    NSMutableDictionary * newMessageOb = [NSMutableDictionary new];
-    newMessageOb[kMessageContent] = messageString;
-    
-    // Add Message Right To Collection
-    [_chatController addNewMessage:newMessageOb];
-}
 ```
 
 This gives you the opportunity to do things like validate the message, assign a sent by, sent to, set a timestamp, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.
@@ -123,7 +117,7 @@ if (!message[kMessageRuntimeSentBy]) {
  */
 @property (strong, nonatomic) UIColor * opponentBubbleColor;
 /*!
- Change Overall Tint (send btn, top bar, and opponent bubbles) - Use this for a quick theme change
+ Change Overall Tint (send btn active and top bar text/icons) 
  */
 @property (strong, nonatomic) UIColor * tintColor;
 
@@ -149,4 +143,13 @@ You can run these if you'd like to notify the user that their connection to the 
  */
 - (void) isOnline;
 ```
+
+
+<h3> CHANGELOG </h3>
+
+v1.0.1 - 1 April 2014
+
+- Fixed Japanese / Chinese Keyboard Issue
+- Changed tintColor property to be more intuitive
+- Changed new message delegate to package messages as dictionaries
 
