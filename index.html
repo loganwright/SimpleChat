@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Simplechat by LoganWright</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Simplechat</h1>
+        <h2>An Easy To Use Bubble Chat Interface </h2>
+        <a href="https://github.com/LoganWright/SimpleChat" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="simplechat" class="anchor" href="#simplechat"><span class="octicon octicon-link"></span></a>SimpleChat</h1>
+
+<p>An easy to use bubble chat UI as an alternative to the traditional iOS talk bubbles.</p>
+
+<p align="center">
+  <img src="http://i.stack.imgur.com/OrRIO.png?raw=true"><img></p>
+
+<h3>
+<a name="quickstart" class="anchor" href="#quickstart"><span class="octicon octicon-link"></span></a>QuickStart</h3>
+
+<h4>
+<a name="1-add-chatcontroller-folder-to-xcode" class="anchor" href="#1-add-chatcontroller-folder-to-xcode"><span class="octicon octicon-link"></span></a>1. Add "ChatController" Folder to Xcode</h4>
+
+<ul>
+<li>Unzip package</li>
+<li>Drag ChatController Folder into your Xcode project</li>
+<li>Make sure "Copy items into destination group's folder (if needed)" is selected</li>
+</ul><h4>
+<a name="step-2-your-viewcontrollerh-file" class="anchor" href="#step-2-your-viewcontrollerh-file"><span class="octicon octicon-link"></span></a>Step 2: Your ViewController.h file</h4>
+
+<ul>
+<li>Import ChatController</li>
+<li>Set up as ChatControllerDelegate</li>
+<li>I like to declare a chatController property, this is optional</li>
+</ul><div class="highlight highlight-ObjC"><pre><span class="n">import</span> <span class="o">&lt;</span><span class="n">UIKit</span><span class="o">/</span><span class="n">UIKit</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+<span class="cp">#import "ChatController.h"</span>
+
+<span class="k">@interface</span> <span class="nc">ViewController</span> : <span class="nc">UIViewController</span> <span class="o">&lt;</span><span class="n">ChatControllerDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">ChatController</span> <span class="o">*</span> <span class="n">chatController</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+<h4>
+<a name="step-3-add-delegate-method" class="anchor" href="#step-3-add-delegate-method"><span class="octicon octicon-link"></span></a>Step 3: Add Delegate Method</h4>
+
+<p>Whenever the user sends a message from inside of the ChatController, it will pass the message to the delegate as a dictionary.</p>
+
+<p>If you'd like to show this on the UI, you'll need to pass it back into the controller, like below.  </p>
+
+<div class="highlight highlight-ObjC"><pre>
+<span class="c1">// Will be called when user presses send</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">chatController:</span><span class="p">(</span><span class="n">ChatController</span> <span class="o">*</span><span class="p">)</span><span class="nv">chatController</span> <span class="nf">didSendMessage:</span><span class="p">(</span><span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">message</span> <span class="p">{</span>
+    <span class="c1">// Messages come prepackaged with the contents of the message and a timestamp in milliseconds</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Message Contents: %@"</span><span class="p">,</span> <span class="n">message</span><span class="p">[</span><span class="n">kMessageContent</span><span class="p">]);</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Timestamp: %@"</span><span class="p">,</span> <span class="n">message</span><span class="p">[</span><span class="n">kMessageTimestamp</span><span class="p">]);</span>
+
+    <span class="c1">// Evaluate or add to the message here for example, if we wanted to assign the current userId:</span>
+    <span class="n">message</span><span class="p">[</span><span class="s">@"sentByUserId"</span><span class="p">]</span> <span class="o">=</span> <span class="s">@"currentUserId"</span><span class="p">;</span>
+
+    <span class="c1">// Must add message to controller for it to show</span>
+    <span class="p">[</span><span class="n">_chatController</span> <span class="n">addNewMessage</span><span class="o">:</span><span class="n">message</span><span class="p">];</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p>This gives you the opportunity to do things like validate the message, assign a sent by, sent to, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.</p>
+
+<h4>
+<a name="step-4-launch" class="anchor" href="#step-4-launch"><span class="octicon octicon-link"></span></a>Step 4: Launch</h4>
+
+<div class="highlight highlight-ObjC"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">_chatController</span><span class="p">)</span> <span class="n">_chatController</span> <span class="o">=</span> <span class="p">[</span><span class="n">ChatController</span> <span class="n">new</span><span class="p">];</span>
+<span class="n">_chatController</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+
+<span class="c1">// Insert Customization Options Here!! (see below)</span>
+
+<span class="c1">// If you'd like to open with an already retrieved array of messages, add this:</span>
+<span class="c1">// _chatController.messages = // some array of MessageOb Objects</span>
+<span class="cm">/*</span>
+<span class="cm">  Note that messages must be NSDictionaries, and at minimum, the text to display should be stored with the key `kMessageContent' </span>
+
+<span class="cm">  You can also store custom data here to pass into the controllerIf you'd like.  Particularly useful for figuring out who sent the message (see below)</span>
+<span class="cm">*/</span>
+
+<span class="c1">// You could also set a currentUserId here if you'd like to ...</span>
+<span class="c1">// _chatController.currentUserId = @"currentUserId";</span>
+
+<span class="p">[</span><span class="n">self</span> <span class="n">presentViewController</span><span class="o">:</span><span class="n">_chatController</span> <span class="n">animated</span><span class="o">:</span><span class="nb">YES</span> <span class="n">completion</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+</pre></div>
+
+<h4>
+<a name="step-5-customize-sentby-logic" class="anchor" href="#step-5-customize-sentby-logic"><span class="octicon octicon-link"></span></a>Step 5: Customize SentBy Logic</h4>
+
+<ul>
+<li>In ChatController.m, find this section:</li>
+</ul><div class="highlight highlight-ObjC"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">message</span><span class="p">[</span><span class="n">kMessageRuntimeSentBy</span><span class="p">])</span> <span class="p">{</span>
+
+    <span class="c1">// Random just for now, set at runtime</span>
+    <span class="kt">int</span> <span class="n">sentByNumb</span> <span class="o">=</span> <span class="n">arc4random</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">message</span><span class="p">[</span><span class="n">kMessageRuntimeSentBy</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="n">numberWithInt</span><span class="o">:</span><span class="p">(</span><span class="n">sentByNumb</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="n">kSentByOpponent</span> <span class="o">:</span> <span class="n">kSentByUser</span><span class="p">];</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<p>It is currently set to random, just so you can see how the conversation would look hypothetically. You should replace this with your own custom logic, for instance, you could create a currentUserId property and add a sentBy key to your message dictionaries and do this:</p>
+
+<div class="highlight highlight-ObjC"><pre><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">message</span><span class="p">[</span><span class="n">kMessageRuntimeSentBy</span><span class="p">])</span> <span class="p">{</span>
+
+    <span class="c1">// See if the sentBy associated with the message matches our currentUserId</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">_currentUserId</span> <span class="n">isEqualToString</span><span class="o">:</span><span class="n">message</span><span class="p">[</span><span class="s">@"sentByUserId"</span><span class="p">]])</span> <span class="p">{</span>
+        <span class="n">message</span><span class="p">[</span><span class="n">kMessageRuntimeSentBy</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="n">numberWithInt</span><span class="o">:</span><span class="n">kSentByUser</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">message</span><span class="p">[</span><span class="n">kMessageRuntimeSentBy</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="n">numberWithInt</span><span class="o">:</span><span class="n">kSentByOpponent</span><span class="p">];</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="customization-options" class="anchor" href="#customization-options"><span class="octicon octicon-link"></span></a>Customization Options</h3>
+
+<div class="highlight highlight-ObjC"><pre><span class="cm">/*!</span>
+<span class="cm"> The color of the user's chat bubbles</span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span> <span class="n">userBubbleColor</span><span class="p">;</span>
+<span class="cm">/*!</span>
+<span class="cm"> The color of the opponent's chat bubbles</span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span> <span class="n">opponentBubbleColor</span><span class="p">;</span>
+<span class="cm">/*!</span>
+<span class="cm"> Change Overall Tint (send btn active and top bar text/icons) </span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span> <span class="n">tintColor</span><span class="p">;</span>
+
+<span class="cm">/*!</span>
+<span class="cm"> The img to use for the opponent - Can be nil</span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIImage</span> <span class="o">*</span> <span class="n">opponentImg</span><span class="p">;</span>
+<span class="cm">/*!</span>
+<span class="cm"> To set the title</span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span> <span class="n">chatTitle</span><span class="p">;</span>
+</pre></div>
+
+<h3>
+<a name="status-notifications" class="anchor" href="#status-notifications"><span class="octicon octicon-link"></span></a>Status Notifications</h3>
+
+<p>You can run these if you'd like to notify the user that their connection to the server is inactive.  Call isOffline to show the notification, call isOnline to hide it.  It is safe to call these repeatedly.</p>
+
+<div class="highlight highlight-ObjC"><pre><span class="cm">/*!</span>
+<span class="cm"> Notify UI that user is: Offline</span>
+<span class="cm"> */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">isOffline</span><span class="p">;</span>
+<span class="cm">/*!</span>
+<span class="cm"> Notify UI that user is: Online</span>
+<span class="cm"> */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">isOnline</span><span class="p">;</span>
+</pre></div>
+
+<h3>
+<a name="-changelog-" class="anchor" href="#-changelog-"><span class="octicon octicon-link"></span></a> CHANGELOG </h3>
+
+<p>v1.0.1 - 1 April 2014</p>
+
+<ul>
+<li>Fixed Japanese / Chinese Keyboard Issue</li>
+<li>Changed tintColor property to be more intuitive</li>
+<li>Changed new message delegate to package messages as dictionaries</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/LoganWright/SimpleChat/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/LoganWright/SimpleChat/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/LoganWright/SimpleChat"></a> is maintained by <a href="https://github.com/LoganWright">LoganWright</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
