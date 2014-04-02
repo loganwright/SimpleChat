@@ -36,6 +36,7 @@ import <UIKit/UIKit.h>
 ####Step 3: Add Delegate Method
 
 Whenever the user sends a message from inside of the ChatController, it will pass the message to the delegate as a dictionary.
+
 If you'd like to show this on the UI, you'll need to pass it back into the controller, like below.  
 
 ```ObjC
@@ -55,7 +56,7 @@ If you'd like to show this on the UI, you'll need to pass it back into the contr
 
 ```
 
-This gives you the opportunity to do things like validate the message, assign a sent by, sent to, set a timestamp, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.
+This gives you the opportunity to do things like validate the message, assign a sent by, sent to, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.
 
 ####Step 4: Launch
 
@@ -72,6 +73,9 @@ _chatController.delegate = self;
   
   You can also store custom data here to pass into the controllerIf you'd like.  Particularly useful for figuring out who sent the message (see below)
 */
+
+// You could also set a currentUserId here if you'd like to ...
+// _chatController.currentUserId = @"currentUserId";
 
 [self presentViewController:_chatController animated:YES completion:nil];
 ```    
