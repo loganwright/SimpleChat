@@ -231,7 +231,7 @@ static int chatInputStartingHeight = 40;
         _myCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
         [UIView animateWithDuration:duration delay:0.0 options:(animationCurve << 16) animations:^{
             
-            _myCollectionView.frame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput) - keyboardHeight) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput) - keyboardHeight);
+            _myCollectionView.frame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - chatInputStartingHeight - keyboardHeight) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - chatInputStartingHeight - keyboardHeight);
             
         } completion:^(BOOL finished) {
             if (finished) {

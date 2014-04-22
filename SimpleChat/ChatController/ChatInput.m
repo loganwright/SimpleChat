@@ -242,6 +242,11 @@
     [self alignTextViewWithAnimation:NO];
 }
 
+- (void) textViewDidChangeSelection:(UITextView *)textView {
+    [self resizeView];
+    [self alignTextViewWithAnimation:NO];
+}
+
 - (BOOL) textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if (_maxCharacters) {
@@ -459,7 +464,7 @@
         _placeholderLabel.backgroundColor = [UIColor clearColor];
         _placeholderLabel.font = [UIFont systemFontOfSize:14];
         _placeholderLabel.textColor = [UIColor lightGrayColor];
-        _placeholderLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        _placeholderLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
          [self insertSubview:_placeholderLabel aboveSubview:_textView];
     }
 
