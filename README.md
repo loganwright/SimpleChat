@@ -148,6 +148,20 @@ You can run these if you'd like to notify the user that their connection to the 
 - (void) isOnline;
 ```
 
+####Storyboard Support
+
+Storyboard support is currently available <a href="https://github.com/LoganWright/SimpleChat/tree/Storyboards">here!</a>
+
+####NavigationController Support
+
+Navigation controller support is currently available <a href="https://github.com/LoganWright/SimpleChat/tree/NavigationController">here!</a>
+
+If you're using a NavigationController, make sure to set:
+
+```ObjC
+_chatController.isNavigationControllerVersion = YES;
+```
+
 
 <h3> CHANGELOG </h3>
 
