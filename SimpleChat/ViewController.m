@@ -37,7 +37,12 @@
     if (!_chatController) _chatController = [ChatController new];
     _chatController.delegate = self;
     _chatController.opponentImg = [UIImage imageNamed:@"tempUser.png"];
-    [self presentViewController:_chatController animated:YES completion:nil];
+    // Modal
+    // [self presentViewController:_chatController animated:YES completion:nil];
+    
+    // Push
+    _chatController.isNavigationControllerVersion = YES;
+    [self.navigationController pushViewController:_chatController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
