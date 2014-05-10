@@ -164,9 +164,13 @@
         
         // start - finishes autocorrects
         _shouldIgnoreKeyboardNotifications = YES;
+        // Triggers AutoCorrect
         [_textView endEditing:YES];
-        [_textView setKeyboardType:UIKeyboardTypeAlphabet];
-        [_textView becomeFirstResponder];
+        // In case the display is at the bottom and the user sends.  If that happens, we don't want the keyboard to scroll up
+        if (isKeyboardVisible) {
+            [_textView setKeyboardType:UIKeyboardTypeAlphabet];
+            [_textView becomeFirstResponder];
+        }
         _shouldIgnoreKeyboardNotifications = NO; // implemented lower?
         // end - finishes autocorrects
         
