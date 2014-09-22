@@ -15,6 +15,7 @@
 
 #import "MessageCell.h"
 #import "MyMacros.h"
+#import "ClipboardLabel.h"
 
 // External Constants
 int const outlineSpace = 22; // 11 px on each side for border
@@ -50,7 +51,7 @@ static int minimumHeight = 30;
 @property CGSize textSize;
 
 // Bubble, Text, ImgV
-@property (strong, nonatomic) UILabel *textLabel;
+@property (strong, nonatomic) ClipboardLabel *textLabel;
 @property (strong, nonatomic) UILabel *bgLabel;
 @property (strong, nonatomic) UIImageView *imageView;
 
@@ -84,7 +85,7 @@ static int minimumHeight = 30;
         }
         
         if (!_textLabel) {
-            _textLabel = [UILabel new];
+            _textLabel = [ClipboardLabel new];
             _textLabel.layer.rasterizationScale = 2.0f;
             _textLabel.layer.shouldRasterize = YES;
             _textLabel.font = [UIFont systemFontOfSize:15.0f];
