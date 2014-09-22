@@ -44,52 +44,7 @@ static int chatInputStartingHeight = 40;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        
-        // TopBar
-        _topBar = [[TopBar alloc]init];
-        _topBar.title = @"Chat Controller";
-        _topBar.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
-        _topBar.delegate = self;
-        
-        // ChatInput
-        _chatInput = [[ChatInput alloc]init];
-        _chatInput.stopAutoClose = NO;
-        _chatInput.placeholderLabel.text = @"  Send A Message";
-        _chatInput.delegate = self;
-        _chatInput.backgroundColor = [UIColor colorWithWhite:1 alpha:0.825f];
-        
-        // Set Up Flow Layout
-        UICollectionViewFlowLayout * flow = [[UICollectionViewFlowLayout alloc]init];
-        flow.sectionInset = UIEdgeInsetsMake(80, 0, 10, 0);
-        flow.scrollDirection = UICollectionViewScrollDirectionVertical;
-        flow.minimumLineSpacing = 6;
-        
-        // Set Up CollectionView
-        CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
-        _myCollectionView = [[UICollectionView alloc]initWithFrame:myFrame collectionViewLayout:flow];
-        //_myCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _myCollectionView.backgroundColor = [UIColor whiteColor];
-        _myCollectionView.delegate = self;
-        _myCollectionView.dataSource = self;
-        _myCollectionView.indicatorStyle = UIScrollViewIndicatorStyleDefault;
-        _myCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 2, 0, -2);
-        _myCollectionView.allowsSelection = YES;
-        _myCollectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [_myCollectionView registerClass:[MessageCell class]
-              forCellWithReuseIdentifier:kMessageCellReuseIdentifier];
-        
-        // Register Keyboard Notifications
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShow:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
+
     }
     return self;
 }
@@ -98,12 +53,59 @@ static int chatInputStartingHeight = 40;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    // Custom initialization
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    // TopBar
+    _topBar = [[TopBar alloc]init];
+    _topBar.title = @"Chat Controller";
+    _topBar.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _topBar.delegate = self;
+    
+    // ChatInput
+    _chatInput = [[ChatInput alloc]init];
+    _chatInput.stopAutoClose = NO;
+    _chatInput.placeholderLabel.text = @"  Send A Message";
+    _chatInput.delegate = self;
+    _chatInput.backgroundColor = [UIColor colorWithWhite:1 alpha:0.825f];
+    
+    // Set Up Flow Layout
+    UICollectionViewFlowLayout * flow = [[UICollectionViewFlowLayout alloc]init];
+    flow.sectionInset = UIEdgeInsetsMake(80, 0, 10, 0);
+    flow.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flow.minimumLineSpacing = 6;
+    
+    // Set Up CollectionView
+    CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
+    _myCollectionView = [[UICollectionView alloc]initWithFrame:myFrame collectionViewLayout:flow];
+    //_myCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    _myCollectionView.backgroundColor = [UIColor whiteColor];
+    _myCollectionView.delegate = self;
+    _myCollectionView.dataSource = self;
+    _myCollectionView.indicatorStyle = UIScrollViewIndicatorStyleDefault;
+    _myCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 2, 0, -2);
+    _myCollectionView.allowsSelection = YES;
+    _myCollectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [_myCollectionView registerClass:[MessageCell class]
+          forCellWithReuseIdentifier:kMessageCellReuseIdentifier];
+    
+    // Register Keyboard Notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     
-    // Add views here, or they will create problems when launching in landscape
+    // Add views here, or they may create problems when launching in landscape
     
     [self.view addSubview:_myCollectionView];
     [self scrollToBottom];
