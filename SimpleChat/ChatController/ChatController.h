@@ -43,6 +43,10 @@ FOUNDATION_EXPORT NSString * const kMessageTimestamp;
 
 @property (retain, nonatomic) id<ChatControllerDelegate>delegate;
 
+#pragma mark PRESENTATION STYLE
+
+@property BOOL isNavigationControllerVersion;
+
 #pragma mark PROPERTIES
 
 /*!
