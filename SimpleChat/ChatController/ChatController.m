@@ -84,19 +84,24 @@ static int chatInputStartingHeight = 40;
     UICollectionViewFlowLayout * flow = [[UICollectionViewFlowLayout alloc]init];
 
     int topOffset = 10;
-    CGFloat topInset = CGRectGetHeight(_topBar.frame) + topOffset;
-    if (_isNavigationControllerVersion) {
-        CGRect navBarFrame = self.navigationController.navigationBar.frame;
-        topInset = CGRectGetHeight(navBarFrame) + CGRectGetMinY(navBarFrame) + topOffset;
-    }
-    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(topInset, 0, 10, 0);
+//    CGFloat topInset = CGRectGetHeight(_topBar.frame) + topOffset;
+//    if (_isNavigationControllerVersion) {
+//        CGRect navBarFrame = self.navigationController.navigationBar.frame;
+//        topInset = CGRectGetHeight(navBarFrame) + CGRectGetMinY(navBarFrame) + topOffset;
+//    }
+    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(10, 0, 10, 0);
 
     flow.sectionInset = edgeInsets;
     flow.scrollDirection = UICollectionViewScrollDirectionVertical;
     flow.minimumLineSpacing = 6;
 
+    CGFloat heightOffset = 0;
+    if (!self.navigationController.navigationBar.translucent) {
+        heightOffset = CGRectGetHeight(self.navigationController.navigationBar.bounds) + 20;
+    }
+    
     // Set Up CollectionView Frame
-    CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput)) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput));
+    CGRect myFrame = (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation])) ? CGRectMake(0, 0, ScreenHeight(), ScreenWidth() - height(_chatInput) - heightOffset) : CGRectMake(0, 0, ScreenWidth(), ScreenHeight() - height(_chatInput) - heightOffset);
 
     // Set Up CollectionView
     _myCollectionView = [[UICollectionView alloc]initWithFrame:myFrame collectionViewLayout:flow];

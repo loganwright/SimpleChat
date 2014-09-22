@@ -30,6 +30,8 @@
     UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
     [tap addTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:tap];
+    
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void) handleTap:(UITapGestureRecognizer *)tap {

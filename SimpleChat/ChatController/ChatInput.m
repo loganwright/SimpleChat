@@ -16,6 +16,8 @@
 #import "ChatInput.h"
 #import "MyMacros.h"
 
+static CGFloat const opaqueNavBarOffset = 64;
+
 @interface ChatInput ()
 
 // The main views
@@ -43,14 +45,14 @@
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor whiteColor];
-        
+    
         // Set Up Main Frame
         UIInterfaceOrientation myOrientation = [UIApplication sharedApplication].statusBarOrientation;
         if (UIInterfaceOrientationIsPortrait(myOrientation)) {
-            self.frame = CGRectMake(0, ScreenHeight() - 40, ScreenWidth(), 40);
+            self.frame = CGRectMake(0, ScreenHeight() - 40 - opaqueNavBarOffset, ScreenWidth(), 40);
         }
         else {
-            self.frame = CGRectMake(0, ScreenWidth() - 40, ScreenHeight(), 40);
+            self.frame = CGRectMake(0, ScreenWidth() - 40 - opaqueNavBarOffset, ScreenHeight(), 40);
         }
         
         // Other Properties
@@ -272,17 +274,17 @@
     CGFloat maxHeight;
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
         if (isKeyboardVisible) {
-            inputStartingPoint = ScreenWidth() - currentKeyboardHeight;
+            inputStartingPoint = ScreenWidth() - currentKeyboardHeight - opaqueNavBarOffset;
             
         }
-        else inputStartingPoint = ScreenWidth();
+        else inputStartingPoint = ScreenWidth() - opaqueNavBarOffset;
     }
     else {
         if (isKeyboardVisible) {
-            inputStartingPoint = ScreenHeight() - currentKeyboardHeight;
+            inputStartingPoint = ScreenHeight() - currentKeyboardHeight - opaqueNavBarOffset;
             
         }
-        else inputStartingPoint = ScreenHeight();
+        else inputStartingPoint = ScreenHeight() - opaqueNavBarOffset;
     }
     
     if (isKeyboardVisible) maxHeight = inputStartingPoint - _maxY.intValue;
