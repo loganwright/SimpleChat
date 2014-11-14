@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SimpleChat-Swift.h"
 
 @interface ViewController ()
 
@@ -33,48 +34,14 @@
 }
 
 - (void) handleTap:(UITapGestureRecognizer *)tap {
-    
-    if (!_chatController) _chatController = [ChatController new];
-    _chatController.delegate = self;
-    _chatController.opponentImg = [UIImage imageNamed:@"tempUser.png"];
-    // Modal
-    // [self presentViewController:_chatController animated:YES completion:nil];
-    
-    // Push
-    _chatController.isNavigationControllerVersion = YES;
-    [self.navigationController pushViewController:_chatController animated:YES];
-}
+
+    LGChatController *chatController = [LGChatController new];
+    [self.navigationController pushViewController:chatController animated:YES];}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-#pragma mark CHAT CONTROLLER DELEGATE
-
-- (void) chatController:(ChatController *)chatController didSendMessage:(NSMutableDictionary *)message {
-    // Messages come prepackaged with the contents of the message and a timestamp in milliseconds
-    NSLog(@"Message Contents: %@", message[kMessageContent]);
-    NSLog(@"Timestamp: %@", message[kMessageTimestamp]);
-    
-    // Evaluate or add to the message here for example, if we wanted to assign the current userId:
-    message[@"sentByUserId"] = @"currentUserId";
-    
-    // Must add message to controller for it to show
-    [_chatController addNewMessage:message];
-}
-
-
-
-/* Optional
-- (void) closeChatController {
-    [chatController dismissViewControllerAnimated:YES completion:^{
-        [chatController removeFromParentViewController];
-        chatController = nil;
-    }];
-}
-*/
 
 @end

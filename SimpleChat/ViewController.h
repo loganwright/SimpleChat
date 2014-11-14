@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ChatController.h"
-
-@interface ViewController : UIViewController <ChatControllerDelegate>
-
-@property (strong, nonatomic) ChatController * chatController;
+@interface ViewController : UIViewController
 
 @end
