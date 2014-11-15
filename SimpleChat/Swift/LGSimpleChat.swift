@@ -345,7 +345,9 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
-        self.scrollToBottom()
+        UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.scrollToBottom()
+            }, completion: nil)
     }
     
     // MARK: Scrolling
@@ -621,13 +623,18 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     
     // MARK: Public Properties
     
-    var maxHeight: CGFloat = 200
-    
+    var maxHeightPortrait: CGFloat = 160
+    var maxHeightLandScape: CGFloat = 60
+    var maxHeight: CGFloat {
+        get {
+            return UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation) ? maxHeightPortrait : maxHeightLandScape
+        }
+    }
     // MARK: Private Properties
     
     private var maxSize: CGSize {
         get {
-            return CGSize(width: CGRectGetWidth(self.bounds), height: self.maxHeight)
+            return CGSize(width: CGRectGetWidth(self.bounds), height: self.maxHeightPortrait)
         }
     }
     
@@ -707,6 +714,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
         sizingTextView.text = self.text
         let targetSize = sizingTextView.sizeThatFits(maxSize)
         var targetHeight = targetSize.height
+        let maxHeight = self.maxHeight
         return targetHeight < maxHeight ? targetHeight : maxHeight
     }
     
