@@ -41,6 +41,26 @@ class LGMessageCell : UITableViewCell {
         static var font: UIFont = UIFont.systemFontOfSize(17.0)
     }
     
+    /*
+    These methods are included for ObjC compatibility.  If using Swift, you can set the Appearance variables directly.
+    */
+    
+    class func setAppearanceOpponentColor(opponentColor: UIColor) {
+        Appearance.opponentColor = opponentColor
+    }
+    
+    class func setAppearanceUserColor(userColor: UIColor) {
+        Appearance.userColor = userColor
+    }
+    
+    class func setOpponentImage(opponentImage: UIImage?) {
+        Appearance.opponentImage = opponentImage
+    }
+    
+    class  func setAppearanceFont(font: UIFont) {
+        Appearance.font = font
+    }
+    
     // MARK: Message Bubble TextView
     
     private lazy var textView: MessageBubbleTextView  = {
@@ -74,7 +94,7 @@ class LGMessageCell : UITableViewCell {
     
     private var maxSize: CGSize {
         get {
-            let maxWidth = CGRectGetWidth(self.bounds) * 0.75
+            let maxWidth = CGRectGetWidth(self.bounds) * 0.75 // Cells can take up to 3/4 of screen
             let maxHeight = CGFloat.max
             return CGSize(width: maxWidth, height: maxHeight)
         }
@@ -86,7 +106,6 @@ class LGMessageCell : UITableViewCell {
     Use this in cellForRowAtIndexPath to setup the cell.
     */
     func setupWithMessage(message: LGChatMessage) -> CGSize {
-        // TODO: Set
         textView.text = message.content
         size = textView.sizeThatFits(maxSize)
         if size.height < minimumHeight {
@@ -94,8 +113,6 @@ class LGMessageCell : UITableViewCell {
         }
         textView.bounds.size = size
         self.styleTextViewForSentBy(message.sentBy)
-        
-        println("Size: \(size) Text: \(message.content)")
         return size
     }
     
@@ -122,11 +139,11 @@ class LGMessageCell : UITableViewCell {
 
 // MARK: Chat Controller
 
-class LGChatController : UIViewController, LGChatInputDelegate {
+class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataSource, LGChatInputDelegate {
     
     // MARK: Constants
     
-    struct Constants {
+    private struct Constants {
         static let MessagesSection: Int = 0;
         static let MessageCellIdentifier: String = "LGChatController.Constants.MessageCellIdentifier"
     }
@@ -192,7 +209,7 @@ class LGChatController : UIViewController, LGChatInputDelegate {
         self.view.addSubview(chatInput)
     }
     
-    func setupLayoutConstraints() {
+    private func setupLayoutConstraints() {
         chatInput.setTranslatesAutoresizingMaskIntoConstraints(false)
         tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.view.addConstraints(self.chatInputConstraints())
@@ -289,9 +306,8 @@ class LGChatController : UIViewController, LGChatInputDelegate {
         self.scrollToBottom()
     }
     
-}
-
-extension LGChatController : UITableViewDelegate {
+    // MARK: UITableViewDelegate
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let padding: CGFloat = 10.0
         sizingCell.bounds.size.width = CGRectGetWidth(self.view.bounds)
@@ -304,9 +320,8 @@ extension LGChatController : UITableViewDelegate {
             self.chatInput.textView.resignFirstResponder()
         }
     }
-}
-
-extension LGChatController : UITableViewDataSource {
+    
+    // MARK: UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1;
@@ -324,6 +339,7 @@ extension LGChatController : UITableViewDataSource {
     
 }
 
+
 // MARK: Chat Input
 
 protocol LGChatInputDelegate : class {
@@ -333,19 +349,49 @@ protocol LGChatInputDelegate : class {
 
 class LGChatInput : UIView, LGStretchyTextViewDelegate {
     
+    // MARK: Styling
+    
+    struct Appearance {
+        static var includeBlur = true
+        static var tintColor = UIColor(red: 0.0, green: 120 / 255.0, blue: 255 / 255.0, alpha: 1.0)
+        static var backgroundColor = UIColor.whiteColor()
+        static var textViewFont = UIFont.systemFontOfSize(17.0)
+        static var textViewTextColor = UIColor.darkTextColor()
+        static var textViewBackgroundColor = UIColor.whiteColor()
+    }
+    
+    /*
+    These methods are included for ObjC compatibility.  If using Swift, you can set the Appearance variables directly.
+    */
+    
+    class func setAppearanceIncludeBlur(includeBlur: Bool) {
+        Appearance.includeBlur = includeBlur
+    }
+    
+    class func setAppearanceTintColor(color: UIColor) {
+        Appearance.tintColor = color
+    }
+    
+    class func setAppearanceBackgroundColor(color: UIColor) {
+        Appearance.backgroundColor = color
+    }
+    
+    class func setAppearanceTextViewFont(textViewFont: UIFont) {
+        Appearance.textViewFont = textViewFont
+    }
+    
+    class func setAppearanceTextViewTextColor(textColor: UIColor) {
+        Appearance.textViewTextColor = textColor
+    }
+    
+    class func setTextViewBackgroundColor(color: UIColor) {
+        Appearance.textViewBackgroundColor = color
+    }
+    
     // MARK: Public Properties
     
     var textViewInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     weak var delegate: LGChatInputDelegate?
-    
-    var font: UIFont {
-        get {
-            return self.textView.font
-        }
-        set {
-            self.textView.font = font
-        }
-    }
     
     // MARK: Private Properties
     
@@ -353,12 +399,14 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     private let sendButton = UIButton.buttonWithType(.System) as UIButton
     private let blurredBackgroundView: UIToolbar = UIToolbar()
     private var heightConstraint: NSLayoutConstraint!
+    private var sendButtonHeightConstraint: NSLayoutConstraint!
     
     // MARK: Initialization
     
     override init(frame: CGRect = CGRectZero) {
         super.init(frame: frame)
         self.setup()
+        self.stylize()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -368,7 +416,6 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     // MARK: Setup
     
     func setup() {
-        self.backgroundColor = UIColor.whiteColor()
         self.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.setupSendButton()
         self.setupSendButtonConstraints()
@@ -395,6 +442,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     }
     
     func setupSendButton() {
+        self.sendButton.enabled = false
         self.sendButton.setTitle("Send", forState: .Normal)
         self.sendButton.addTarget(self, action: "sendButtonPressed:", forControlEvents: .TouchUpInside)
         self.sendButton.bounds = CGRect(x: 0, y: 0, width: 40, height: 1)
@@ -406,11 +454,11 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
         self.sendButton.removeConstraints(self.sendButton.constraints())
         
         // TODO: Fix so that button height doesn't change on first newLine
-        let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .LessThanOrEqual, toItem: self.sendButton, attribute: .Top, multiplier: 1.0, constant: -textViewInsets.top)
         let rightConstraint = NSLayoutConstraint(item: self, attribute: .Right, relatedBy: .Equal, toItem: self.sendButton, attribute: .Right, multiplier: 1.0, constant: textViewInsets.right)
         let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.sendButton, attribute: .Bottom, multiplier: 1.0, constant: textViewInsets.bottom)
         let widthConstraint = NSLayoutConstraint(item: self.sendButton, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 40)
-        self.addConstraints([topConstraint, widthConstraint, rightConstraint, bottomConstraint])
+        sendButtonHeightConstraint = NSLayoutConstraint(item: self.sendButton, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 30)
+        self.addConstraints([sendButtonHeightConstraint, widthConstraint, rightConstraint, bottomConstraint])
     }
     
     func setupTextViewConstraints() {
@@ -437,13 +485,32 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
         self.addConstraints([topConstraint, leftConstraint, bottomConstraint, rightConstraint])
     }
     
+    // MARK: Styling
+    
+    func stylize() {
+        self.textView.backgroundColor = Appearance.textViewBackgroundColor
+        self.sendButton.tintColor = Appearance.tintColor
+        self.textView.tintColor = Appearance.tintColor
+        self.textView.font = Appearance.textViewFont
+        self.textView.textColor = Appearance.textViewTextColor
+        self.blurredBackgroundView.hidden = !Appearance.includeBlur
+        self.backgroundColor = Appearance.backgroundColor
+    }
+    
     // MARK: StretchyTextViewDelegate
     
-    func textViewDidChangeSize(chatInput: LGStretchyTextView) {
-        let targetConstant = CGRectGetHeight(chatInput.bounds) + textViewInsets.top + textViewInsets.bottom
+    func stretchyTextViewDidChangeSize(textView: LGStretchyTextView) {
+        let textViewHeight = CGRectGetHeight(textView.bounds)
+        if countElements(textView.text) == 0 {
+            self.sendButtonHeightConstraint.constant = textViewHeight
+        }
+        let targetConstant = textViewHeight + textViewInsets.top + textViewInsets.bottom
         self.heightConstraint.constant = targetConstant
         self.delegate?.chatInputDidResize(self)
-        println("SendHeight: \(CGRectGetHeight(self.sendButton.bounds))")
+    }
+    
+    func stretchyTextView(textView: LGStretchyTextView, validityDidChange isValid: Bool) {
+        self.sendButton.enabled = isValid
     }
     
     // MARK: Button Presses
@@ -458,8 +525,9 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
 
 // MARK: Text View
 
-protocol LGStretchyTextViewDelegate : class {
-    func textViewDidChangeSize(chatInput: LGStretchyTextView)
+@objc protocol LGStretchyTextViewDelegate {
+    func stretchyTextViewDidChangeSize(chatInput: LGStretchyTextView)
+    optional func stretchyTextView(textView: LGStretchyTextView, validityDidChange isValid: Bool)
 }
 
 class LGStretchyTextView : UITextView, UITextViewDelegate {
@@ -477,6 +545,19 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     private var maxSize: CGSize {
         get {
             return CGSize(width: CGRectGetWidth(self.bounds), height: self.maxHeight)
+        }
+    }
+    
+    private var _isValid = false
+    private var isValid: Bool {
+        get {
+            return _isValid
+        }
+        set {
+            if _isValid != newValue {
+                _isValid = newValue
+                self.stretchyTextViewDelegate?.stretchyTextView?(self, validityDidChange: _isValid)
+            }
         }
     }
     
@@ -532,7 +613,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     
     func resize() {
         self.bounds.size.height = self.targetHeight()
-        self.stretchyTextViewDelegate?.textViewDidChangeSize(self)
+        self.stretchyTextViewDelegate?.stretchyTextViewDidChangeSize(self)
     }
     
     func targetHeight() -> CGFloat {
@@ -578,9 +659,12 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     func textViewDidChangeSelection(textView: UITextView) {
         self.align()
     }
+    
+    func textViewDidChange(textView: UITextView) {
+        // TODO: Possibly filter spaces and newlines
+        self.isValid = countElements(textView.text) > 0
+    }
 }
-
-
 
 
 
