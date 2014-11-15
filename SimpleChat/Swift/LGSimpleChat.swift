@@ -12,9 +12,39 @@ import UIKit
 
 class LGChatMessage : NSObject {
     
-    enum SentBy {
-        case User, Opponent
+    enum SentBy : String {
+        case User = "LGChatMessageSentByUser"
+        case Opponent = "LGChatMessageSentByOpponent"
     }
+    
+    // MARK: ObjC Compatibility
+    
+    /*
+    ObjC can't interact w/ enums properly, so this is used for converting compatible values.
+    */
+    
+    class func SentByUserString() -> String {
+        return LGChatMessage.SentBy.User.rawValue
+    }
+    
+    class func SentByOpponentString() -> String {
+        return LGChatMessage.SentBy.Opponent.rawValue
+    }
+    
+    var sentByString: String {
+        get {
+            return sentBy.rawValue
+        }
+        set {
+            if let sentBy = SentBy(rawValue: newValue) {
+                self.sentBy = sentBy
+            } else {
+                println("LGChatMessage.FatalError : Property Set : Incompatible string set to SentByString!")
+            }
+        }
+    }
+    
+    // MARK: Public Properties
     
     var sentBy: SentBy
     var content: String
@@ -26,6 +56,14 @@ class LGChatMessage : NSObject {
         self.content = content
     }
     
+    // For ObjC Initialization
+    convenience init (content: String, sentByString: String, timeStamp: NSTimeInterval? = nil) {
+        if let sentBy = SentBy(rawValue: sentByString) {
+            self.init(content: content, sentBy: sentBy, timeStamp: timeStamp)
+        } else {
+            fatalError("LGChatMessage.FatalError : Initialization : Incompatible string set to SentByString!")
+        }
+    }
 }
 
 // MARK: Message Cell
@@ -162,6 +200,10 @@ class LGChatMessageCell : UITableViewCell {
 
 // MARK: Chat Controller
 
+@objc protocol LGChatControllerDelegate {
+    optional func shouldChatController(chatController: LGChatController, addMessage message: LGChatMessage) -> Bool
+    optional func chatController(chatController: LGChatController, didAddNewMessage message: LGChatMessage)
+}
 class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataSource, LGChatInputDelegate {
     
     // MARK: Constants
@@ -178,6 +220,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     */
     var messages: [LGChatMessage] = []
     var opponentImage: UIImage?
+    weak var delegate: LGChatControllerDelegate?
     
     // MARK: Private Properties
     
@@ -324,6 +367,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         messages += [message]
         tableView.reloadData()
         self.scrollToBottom()
+        self.delegate?.chatController?(self, didAddNewMessage: message)
     }
     
     // MARK: SwiftChatInputDelegate
@@ -333,12 +377,15 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func chatInput(chatInput: LGChatInput, didSendMessage message: String) {
+        let newMessage = LGChatMessage(content: message, sentBy: .User)
+        var shouldSendMessage = true
+        if let value = self.delegate?.shouldChatController?(self, addMessage: newMessage) {
+            shouldSendMessage = value
+        }
         
-        // TODO: Remove for production!
-        let sentBy = arc4random_uniform(2) == 0 ? LGChatMessage.SentBy.Opponent : LGChatMessage.SentBy.User
-        self.messages.append(LGChatMessage(content: message, sentBy: sentBy))
-        self.tableView.reloadData()
-        self.scrollToBottom()
+        if shouldSendMessage {
+            self.addNewMessage(newMessage)
+        }
     }
     
     // MARK: UITableViewDelegate

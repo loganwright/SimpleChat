@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "SimpleChat-Swift.h"
 
-@interface ViewController ()
+@interface ViewController () <LGChatControllerDelegate>
 
 @end
 
@@ -30,8 +30,6 @@
     UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
     [tap addTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:tap];
-    
-    
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)tap
@@ -39,12 +37,29 @@
     LGChatController *chatController = [LGChatController new];
     chatController.opponentImage = [UIImage imageNamed:@"User"];
     chatController.title = @"SimpleChat";
+    chatController.delegate = self;
     [self.navigationController pushViewController:chatController animated:YES];}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - LGChatControllerDelegate
+
+- (void)chatController:(LGChatController *)chatController didAddNewMessage:(LGChatMessage *)message
+{
+    NSLog(@"Did Add Message: %@", message.content);
+}
+
+- (BOOL)shouldChatController:(LGChatController *)chatController addMessage:(LGChatMessage *)message
+{
+    /*
+     This is implemented just for demonstration so the sent by is randomized.  This way, the full functionality can be demonstrated.
+     */
+    message.sentByString = arc4random_uniform(2) == 0 ? LGChatMessage.SentByOpponentString : LGChatMessage.SentByUserString;
+    return YES;
 }
 
 @end
