@@ -30,14 +30,13 @@ class LGChatMessage : NSObject {
 
 // MARK: Message Cell
 
-class LGMessageCell : UITableViewCell {
+class LGChatMessageCell : UITableViewCell {
     
     // MARK: Global MessageCell Appearance Modifier
     
     struct Appearance {
         static var opponentColor = UIColor(red: 0.142954, green: 0.60323, blue: 0.862548, alpha: 0.88)
         static var userColor = UIColor(red: 0.14726, green: 0.838161, blue: 0.533935, alpha: 1)
-        static var opponentImage: UIImage? = nil
         static var font: UIFont = UIFont.systemFontOfSize(17.0)
     }
     
@@ -53,17 +52,13 @@ class LGMessageCell : UITableViewCell {
         Appearance.userColor = userColor
     }
     
-    class func setOpponentImage(opponentImage: UIImage?) {
-        Appearance.opponentImage = opponentImage
-    }
-    
     class  func setAppearanceFont(font: UIFont) {
         Appearance.font = font
     }
     
     // MARK: Message Bubble TextView
     
-    private lazy var textView: MessageBubbleTextView  = {
+    private lazy var textView: MessageBubbleTextView = {
         let textView = MessageBubbleTextView()
         self.contentView.addSubview(textView)
         return textView
@@ -86,7 +81,30 @@ class LGMessageCell : UITableViewCell {
         }
     }
     
+    // MARK: ImageView
+    
+    private lazy var opponentImageView: UIImageView = {
+        let opponentImageView = UIImageView()
+        opponentImageView.hidden = true
+        opponentImageView.bounds.size = CGSize(width: self.minimumHeight, height: self.minimumHeight)
+        let halfWidth = CGRectGetWidth(opponentImageView.bounds) / 2.0
+        let halfHeight = CGRectGetHeight(opponentImageView.bounds) / 2.0
+        
+        // Center the imageview vertically to the textView when it is singleLine
+        let textViewSingleLineCenter = self.textView.textContainerInset.top + (Appearance.font.lineHeight / 2.0)
+        opponentImageView.center = CGPointMake(self.padding + halfWidth, textViewSingleLineCenter)
+        opponentImageView.backgroundColor = UIColor.lightTextColor()
+        opponentImageView.layer.rasterizationScale = UIScreen.mainScreen().scale
+        opponentImageView.layer.shouldRasterize = true
+        opponentImageView.layer.cornerRadius = halfHeight
+        opponentImageView.layer.masksToBounds = true
+        self.contentView.addSubview(opponentImageView)
+        return opponentImageView
+    }()
+    
     // MARK: Sizing
+    
+    private let padding: CGFloat = 5.0
     
     private let minimumHeight: CGFloat = 30.0 // arbitrary minimum height
     
@@ -120,7 +138,6 @@ class LGMessageCell : UITableViewCell {
     
     private func styleTextViewForSentBy(sentBy: LGChatMessage.SentBy) {
         let halfTextViewWidth = CGRectGetWidth(self.textView.bounds) / 2.0
-        let padding: CGFloat = 5.0
         let targetX = halfTextViewWidth + padding
         let halfTextViewHeight = CGRectGetHeight(self.textView.bounds) / 2.0
         switch sentBy {
@@ -128,13 +145,19 @@ class LGMessageCell : UITableViewCell {
             self.textView.center.x = targetX
             self.textView.center.y = halfTextViewHeight
             self.textView.layer.borderColor = Appearance.opponentColor.CGColor
+            
+            if self.opponentImageView.image != nil {
+                self.opponentImageView.hidden = false
+                self.textView.center.x += CGRectGetWidth(self.opponentImageView.bounds) + padding
+            }
+            
         case .User:
+            self.opponentImageView.hidden = true
             self.textView.center.x = CGRectGetMaxX(self.contentView.bounds) - targetX
             self.textView.center.y = halfTextViewHeight
             self.textView.layer.borderColor = Appearance.userColor.CGColor
         }
     }
-    
 }
 
 // MARK: Chat Controller
@@ -154,10 +177,11 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     Use this to set the messages to be displayed
     */
     var messages: [LGChatMessage] = []
+    var opponentImage: UIImage?
     
     // MARK: Private Properties
     
-    private let sizingCell = LGMessageCell()
+    private let sizingCell = LGChatMessageCell()
     private let tableView: UITableView = UITableView()
     private let chatInput = LGChatInput()
     private var bottomChatInputConstraint: NSLayoutConstraint!
@@ -197,7 +221,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         tableView.allowsSelection = false
         tableView.separatorStyle = .None
         tableView.frame = self.view.bounds
-        tableView.registerClass(LGMessageCell.classForCoder(), forCellReuseIdentifier: "identifier")
+        tableView.registerClass(LGChatMessageCell.classForCoder(), forCellReuseIdentifier: "identifier")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
@@ -301,7 +325,10 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func chatInput(chatInput: LGChatInput, didSendMessage message: String) {
-        self.messages.append(LGChatMessage(content: message, sentBy: .User))
+        
+        // TODO: Remove for production!
+        let sentBy = arc4random_uniform(2) == 0 ? LGChatMessage.SentBy.Opponent : LGChatMessage.SentBy.User
+        self.messages.append(LGChatMessage(content: message, sentBy: sentBy))
         self.tableView.reloadData()
         self.scrollToBottom()
     }
@@ -332,13 +359,14 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as LGMessageCell
-        cell.setupWithMessage(self.messages[indexPath.row])
+        var cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as LGChatMessageCell
+        let message = self.messages[indexPath.row]
+        cell.opponentImageView.image = message.sentBy == .Opponent ? self.opponentImage : nil
+        cell.setupWithMessage(message)
         return cell;
     }
     
 }
-
 
 // MARK: Chat Input
 

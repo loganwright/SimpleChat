@@ -18,8 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    
+
     UILabel * tapLabel = [UILabel new];
     tapLabel.bounds = CGRectMake(0, 0, 200, 100);
     tapLabel.text = @"** TAP TO OPEN **";
@@ -31,11 +30,15 @@
     UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
     [tap addTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:tap];
+    
+    
 }
 
-- (void) handleTap:(UITapGestureRecognizer *)tap {
-
+- (void)handleTap:(UITapGestureRecognizer *)tap
+{
     LGChatController *chatController = [LGChatController new];
+    chatController.opponentImage = [UIImage imageNamed:@"User"];
+    chatController.title = @"SimpleChat";
     [self.navigationController pushViewController:chatController animated:YES];}
 
 - (void)didReceiveMemoryWarning
