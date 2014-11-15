@@ -22,7 +22,6 @@
 		809B508C18D7B55B0032A48D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506E18D7B55B0032A48D /* UIKit.framework */; };
 		809B509418D7B55B0032A48D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 809B509218D7B55B0032A48D /* InfoPlist.strings */; };
 		809B509618D7B55B0032A48D /* SimpleChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B509518D7B55B0032A48D /* SimpleChatTests.m */; };
-		809B50CF18D814AC0032A48D /* tempUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 809B50CE18D814AC0032A48D /* tempUser.png */; };
 		809B51A618DABBA90032A48D /* License in Resources */ = {isa = PBXBuildFile; fileRef = 809B51A518DABBA90032A48D /* License */; };
 /* End PBXBuildFile section */
 
@@ -58,7 +57,6 @@
 		809B509118D7B55B0032A48D /* SimpleChatTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleChatTests-Info.plist"; sourceTree = "<group>"; };
 		809B509318D7B55B0032A48D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		809B509518D7B55B0032A48D /* SimpleChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleChatTests.m; sourceTree = "<group>"; };
-		809B50CE18D814AC0032A48D /* tempUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tempUser.png; sourceTree = "<group>"; };
 		809B51A518DABBA90032A48D /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = License; path = ChatController/License; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,7 +128,6 @@
 				806254851A16AA32005A2FD1 /* SimpleChat-Bridging-Header.h */,
 				809B51A518DABBA90032A48D /* License */,
 				806254841A16AA07005A2FD1 /* Swift */,
-				809B50CE18D814AC0032A48D /* tempUser.png */,
 				809B507918D7B55B0032A48D /* AppDelegate.h */,
 				809B507A18D7B55B0032A48D /* AppDelegate.m */,
 				809B507C18D7B55B0032A48D /* Main.storyboard */,
@@ -251,7 +248,6 @@
 				809B508318D7B55B0032A48D /* Images.xcassets in Resources */,
 				809B507518D7B55B0032A48D /* InfoPlist.strings in Resources */,
 				809B507E18D7B55B0032A48D /* Main.storyboard in Resources */,
-				809B50CF18D814AC0032A48D /* tempUser.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

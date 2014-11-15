@@ -209,6 +209,14 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         self.unregisterKeyboardObservers()
     }
     
+    deinit {
+        /*
+        Need to remove delegate and datasource or they will try to send scrollView messages.
+        */
+        self.tableView.delegate = nil
+        self.tableView.dataSource = nil
+    }
+    
     // MARK: Setup
     
     private func setup() {
