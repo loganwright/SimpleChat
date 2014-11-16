@@ -124,7 +124,6 @@ class LGChatMessageCell : UITableViewCell {
             self.font = Appearance.font
             self.scrollEnabled = false
             self.editable = false
-            self.
             self.textContainerInset = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
             self.layer.cornerRadius = 15
             self.layer.borderWidth = 2.0
