@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		800D4D1A1A183A9E00F5CB14 /* LGSimpleChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D181A183A9E00F5CB14 /* LGSimpleChat.swift */; };
+		800D4D1B1A183A9E00F5CB14 /* License in Resources */ = {isa = PBXBuildFile; fileRef = 800D4D191A183A9E00F5CB14 /* License */; };
+		800D4D1F1A183AD600F5CB14 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D1E1A183AD600F5CB14 /* ViewController.m */; };
+		800D4D221A183AF000F5CB14 /* SwiftExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D211A183AF000F5CB14 /* SwiftExampleViewController.swift */; };
 		809B506B18D7B55B0032A48D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506A18D7B55B0032A48D /* Foundation.framework */; };
 		809B506D18D7B55B0032A48D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506C18D7B55B0032A48D /* CoreGraphics.framework */; };
 		809B506F18D7B55B0032A48D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506E18D7B55B0032A48D /* UIKit.framework */; };
@@ -14,21 +18,12 @@
 		809B507718D7B55B0032A48D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B507618D7B55B0032A48D /* main.m */; };
 		809B507B18D7B55B0032A48D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B507A18D7B55B0032A48D /* AppDelegate.m */; };
 		809B507E18D7B55B0032A48D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 809B507C18D7B55B0032A48D /* Main.storyboard */; };
-		809B508118D7B55B0032A48D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B508018D7B55B0032A48D /* ViewController.m */; };
 		809B508318D7B55B0032A48D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 809B508218D7B55B0032A48D /* Images.xcassets */; };
 		809B508A18D7B55B0032A48D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B508918D7B55B0032A48D /* XCTest.framework */; };
 		809B508B18D7B55B0032A48D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506A18D7B55B0032A48D /* Foundation.framework */; };
 		809B508C18D7B55B0032A48D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506E18D7B55B0032A48D /* UIKit.framework */; };
 		809B509418D7B55B0032A48D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 809B509218D7B55B0032A48D /* InfoPlist.strings */; };
 		809B509618D7B55B0032A48D /* SimpleChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B509518D7B55B0032A48D /* SimpleChatTests.m */; };
-		809B50C918D80E040032A48D /* ChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B50C018D80E040032A48D /* ChatController.m */; };
-		809B50CA18D80E040032A48D /* ChatInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B50C218D80E040032A48D /* ChatInput.m */; };
-		809B50CB18D80E040032A48D /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B50C418D80E040032A48D /* MessageCell.m */; };
-		809B50CC18D80E040032A48D /* Previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 809B50C618D80E040032A48D /* Previous.png */; };
-		809B50CD18D80E040032A48D /* TopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B50C818D80E040032A48D /* TopBar.m */; };
-		809B50CF18D814AC0032A48D /* tempUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 809B50CE18D814AC0032A48D /* tempUser.png */; };
-		809B51A618DABBA90032A48D /* License in Resources */ = {isa = PBXBuildFile; fileRef = 809B51A518DABBA90032A48D /* License */; };
-		80E1FCFA191EF03200B76A1F /* ClipboardLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E1FCF9191EF03200B76A1F /* ClipboardLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		800D4D181A183A9E00F5CB14 /* LGSimpleChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LGSimpleChat.swift; sourceTree = "<group>"; };
+		800D4D191A183A9E00F5CB14 /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License; sourceTree = "<group>"; };
+		800D4D1D1A183AD600F5CB14 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		800D4D1E1A183AD600F5CB14 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		800D4D211A183AF000F5CB14 /* SwiftExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExampleViewController.swift; sourceTree = "<group>"; };
+		806254851A16AA32005A2FD1 /* SimpleChat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleChat-Bridging-Header.h"; sourceTree = "<group>"; };
 		809B506718D7B55B0032A48D /* SimpleChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		809B506A18D7B55B0032A48D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		809B506C18D7B55B0032A48D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,28 +54,12 @@
 		809B507918D7B55B0032A48D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		809B507A18D7B55B0032A48D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		809B507D18D7B55B0032A48D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		809B507F18D7B55B0032A48D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		809B508018D7B55B0032A48D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		809B508218D7B55B0032A48D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		809B508818D7B55B0032A48D /* SimpleChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		809B508918D7B55B0032A48D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		809B509118D7B55B0032A48D /* SimpleChatTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleChatTests-Info.plist"; sourceTree = "<group>"; };
 		809B509318D7B55B0032A48D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		809B509518D7B55B0032A48D /* SimpleChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleChatTests.m; sourceTree = "<group>"; };
-		809B50BF18D80E040032A48D /* ChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatController.h; sourceTree = "<group>"; };
-		809B50C018D80E040032A48D /* ChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatController.m; sourceTree = "<group>"; };
-		809B50C118D80E040032A48D /* ChatInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatInput.h; sourceTree = "<group>"; };
-		809B50C218D80E040032A48D /* ChatInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatInput.m; sourceTree = "<group>"; };
-		809B50C318D80E040032A48D /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
-		809B50C418D80E040032A48D /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
-		809B50C518D80E040032A48D /* MyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMacros.h; sourceTree = "<group>"; };
-		809B50C618D80E040032A48D /* Previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Previous.png; sourceTree = "<group>"; };
-		809B50C718D80E040032A48D /* TopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopBar.h; sourceTree = "<group>"; };
-		809B50C818D80E040032A48D /* TopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopBar.m; sourceTree = "<group>"; };
-		809B50CE18D814AC0032A48D /* tempUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tempUser.png; sourceTree = "<group>"; };
-		809B51A518DABBA90032A48D /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License; sourceTree = "<group>"; };
-		80E1FCF8191EF03200B76A1F /* ClipboardLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipboardLabel.h; sourceTree = "<group>"; };
-		80E1FCF9191EF03200B76A1F /* ClipboardLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipboardLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +86,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		800D4D171A183A9E00F5CB14 /* LGSimpleChat */ = {
+			isa = PBXGroup;
+			children = (
+				800D4D181A183A9E00F5CB14 /* LGSimpleChat.swift */,
+				800D4D191A183A9E00F5CB14 /* License */,
+			);
+			path = LGSimpleChat;
+			sourceTree = "<group>";
+		};
+		800D4D1C1A183AD600F5CB14 /* ViewControllerExample */ = {
+			isa = PBXGroup;
+			children = (
+				800D4D1D1A183AD600F5CB14 /* ViewController.h */,
+				800D4D1E1A183AD600F5CB14 /* ViewController.m */,
+			);
+			path = ViewControllerExample;
+			sourceTree = "<group>";
+		};
+		800D4D201A183AF000F5CB14 /* SwiftViewControllerExample */ = {
+			isa = PBXGroup;
+			children = (
+				800D4D211A183AF000F5CB14 /* SwiftExampleViewController.swift */,
+			);
+			path = SwiftViewControllerExample;
+			sourceTree = "<group>";
+		};
 		809B505E18D7B55B0032A48D = {
 			isa = PBXGroup;
 			children = (
@@ -134,13 +145,12 @@
 		809B507018D7B55B0032A48D /* SimpleChat */ = {
 			isa = PBXGroup;
 			children = (
-				809B50BE18D80E040032A48D /* ChatController */,
-				809B50CE18D814AC0032A48D /* tempUser.png */,
+				800D4D171A183A9E00F5CB14 /* LGSimpleChat */,
+				800D4D1C1A183AD600F5CB14 /* ViewControllerExample */,
+				800D4D201A183AF000F5CB14 /* SwiftViewControllerExample */,
 				809B507918D7B55B0032A48D /* AppDelegate.h */,
 				809B507A18D7B55B0032A48D /* AppDelegate.m */,
 				809B507C18D7B55B0032A48D /* Main.storyboard */,
-				809B507F18D7B55B0032A48D /* ViewController.h */,
-				809B508018D7B55B0032A48D /* ViewController.m */,
 				809B508218D7B55B0032A48D /* Images.xcassets */,
 				809B507118D7B55B0032A48D /* Supporting Files */,
 			);
@@ -154,6 +164,7 @@
 				809B507318D7B55B0032A48D /* InfoPlist.strings */,
 				809B507618D7B55B0032A48D /* main.m */,
 				809B507818D7B55B0032A48D /* SimpleChat-Prefix.pch */,
+				806254851A16AA32005A2FD1 /* SimpleChat-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -174,26 +185,6 @@
 				809B509218D7B55B0032A48D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		809B50BE18D80E040032A48D /* ChatController */ = {
-			isa = PBXGroup;
-			children = (
-				809B50C718D80E040032A48D /* TopBar.h */,
-				809B50C818D80E040032A48D /* TopBar.m */,
-				809B50BF18D80E040032A48D /* ChatController.h */,
-				809B50C018D80E040032A48D /* ChatController.m */,
-				809B50C118D80E040032A48D /* ChatInput.h */,
-				809B50C218D80E040032A48D /* ChatInput.m */,
-				80E1FCF8191EF03200B76A1F /* ClipboardLabel.h */,
-				80E1FCF9191EF03200B76A1F /* ClipboardLabel.m */,
-				809B50C318D80E040032A48D /* MessageCell.h */,
-				809B50C418D80E040032A48D /* MessageCell.m */,
-				809B50C518D80E040032A48D /* MyMacros.h */,
-				809B50C618D80E040032A48D /* Previous.png */,
-				809B51A518DABBA90032A48D /* License */,
-			);
-			path = ChatController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,12 +263,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				809B51A618DABBA90032A48D /* License in Resources */,
-				809B50CC18D80E040032A48D /* Previous.png in Resources */,
 				809B508318D7B55B0032A48D /* Images.xcassets in Resources */,
 				809B507518D7B55B0032A48D /* InfoPlist.strings in Resources */,
+				800D4D1B1A183A9E00F5CB14 /* License in Resources */,
 				809B507E18D7B55B0032A48D /* Main.storyboard in Resources */,
-				809B50CF18D814AC0032A48D /* tempUser.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,14 +285,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				809B508118D7B55B0032A48D /* ViewController.m in Sources */,
+				800D4D1A1A183A9E00F5CB14 /* LGSimpleChat.swift in Sources */,
 				809B507B18D7B55B0032A48D /* AppDelegate.m in Sources */,
 				809B507718D7B55B0032A48D /* main.m in Sources */,
-				80E1FCFA191EF03200B76A1F /* ClipboardLabel.m in Sources */,
-				809B50CB18D80E040032A48D /* MessageCell.m in Sources */,
-				809B50CD18D80E040032A48D /* TopBar.m in Sources */,
-				809B50C918D80E040032A48D /* ChatController.m in Sources */,
-				809B50CA18D80E040032A48D /* ChatInput.m in Sources */,
+				800D4D1F1A183AD600F5CB14 /* ViewController.m in Sources */,
+				800D4D221A183AF000F5CB14 /* SwiftExampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,10 +414,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleChat/SimpleChat-Prefix.pch";
 				INFOPLIST_FILE = "SimpleChat/SimpleChat-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SimpleChat/SimpleChat-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -441,10 +431,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleChat/SimpleChat-Prefix.pch";
 				INFOPLIST_FILE = "SimpleChat/SimpleChat-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SimpleChat/SimpleChat-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
