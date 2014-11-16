@@ -10,130 +10,102 @@ An easy to use bubble chat UI as an alternative to the traditional iOS talk bubb
 
 ###QuickStart
 
-####1. Add "ChatController" Folder to Xcode
+####1. Add `LGSimpleChat.swift` To Xcode
 
-- Unzip package
-- Drag ChatController Folder into your Xcode project
+- Drag `LGSimpleChat.swift` into your Xcode project
 - Make sure "Copy items into destination group's folder (if needed)" is selected
 
 ####Step 2: Your ViewController.h file
 
-- Import ChatController
-- Set up as ChatControllerDelegate
-- I like to declare a chatController property, this is optional
+#####ObjC
+
+- Import `<#YourProductModule#>-Swift.h`
+- Conform to `LGChatControllerDelegate`
+
+In `<#YourViewController#>.m`
 
 ```ObjC
-import <UIKit/UIKit.h>
-#import "ChatController.h"
+#import "<#YourViewController#>.h"
+#import "<#YourProductModule#>-Swift.h"
 
-@interface ViewController : UIViewController <ChatControllerDelegate>
-
-@property (strong, nonatomic) ChatController * chatController;
+@interface <#YourViewController#> () <LGChatControllerDelegate>
 
 @end
-```
 
-####Step 3: Add Delegate Method
+@implementation
 
-Whenever the user sends a message from inside of the ChatController, it will pass the message to the delegate as a dictionary.
+#pragma mark - Launch Chat Controller
 
-If you'd like to show this on the UI, you'll need to pass it back into the controller, like below.  
-
-```ObjC
-
-// Will be called when user presses send
-- (void) chatController:(ChatController *)chatController didSendMessage:(NSMutableDictionary *)message {
-    // Messages come prepackaged with the contents of the message and a timestamp in milliseconds
-    NSLog(@"Message Contents: %@", message[kMessageContent]);
-    NSLog(@"Timestamp: %@", message[kMessageTimestamp]);
-    
-    // Evaluate or add to the message here for example, if we wanted to assign the current userId:
-    message[@"sentByUserId"] = @"currentUserId";
-    
-    // Must add message to controller for it to show
-    [_chatController addNewMessage:message];
+- (void)launchChatController
+{
+    LGChatController *chatController = [LGChatController new];
+    chatController.opponentImage = [UIImage imageNamed:@"<#YourImageName#>"];
+    chatController.title = @"<#YourTitle#>";
+    chatController.messages = @[]; // Pass your messages here.
+    chatController.delegate = self;
+    [self.navigationController pushViewController:chatController animated:YES];
 }
 
-```
+#pragma mark - LGChatControllerDelegate
 
-This gives you the opportunity to do things like validate the message, assign a sent by, sent to, or whatever operation I'd like to do before adding it to the view.  For instance, I could attempt to send the message and not display it to the user until it has successfully sent.
-
-####Step 4: Launch
-
-```ObjC
-if (!_chatController) _chatController = [ChatController new];
-_chatController.delegate = self;
-
-// Insert Customization Options Here!! (see below)
-
-// If you'd like to open with an already retrieved array of messages, add this:
-// _chatController.messages = // some array of MessageOb Objects
-/*
-  Note that messages must be NSDictionaries, and at minimum, the text to display should be stored with the key `kMessageContent' 
-  
-  You can also store custom data here to pass into the controllerIf you'd like.  Particularly useful for figuring out who sent the message (see below)
-*/
-
-// You could also set a currentUserId here if you'd like to ...
-// _chatController.currentUserId = @"currentUserId";
-
-[self presentViewController:_chatController animated:YES completion:nil];
-```    
-
-
-####Step 5: Customize SentBy Logic
-
-- In ChatController.m, find this section:
-```ObjC
-if (!message[kMessageRuntimeSentBy]) {
-        
-    // Random just for now, set at runtime
-    int sentByNumb = arc4random() % 2;
-    message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:(sentByNumb == 0) ? kSentByOpponent : kSentByUser];
-
+- (void)chatController:(LGChatController *)chatController didAddNewMessage:(LGChatMessage *)message
+{
+    NSLog(@"Did Add Message: %@", message.content);
 }
-```
-It is currently set to random, just so you can see how the conversation would look hypothetically. You should replace this with your own custom logic, for instance, you could create a currentUserId property and add a sentBy key to your message dictionaries and do this:
-```ObjC
-if (!message[kMessageRuntimeSentBy]) {
-        
-    // See if the sentBy associated with the message matches our currentUserId
-    if ([_currentUserId isEqualToString:message[@"sentByUserId"]]) {
-        message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:kSentByUser];
-    }
-    else {
-        message[kMessageRuntimeSentBy] = [NSNumber numberWithInt:kSentByOpponent];
-    }
 
+- (BOOL)shouldChatController:(LGChatController *)chatController addMessage:(LGChatMessage *)message
+{
+    /*
+    Use this space to prevent sending a message, or to alter a message.  For example, you might want to hold a message until its successfully uploaded to a server.
+    */
+    return YES;
+}
+
+@end
+
+```
+
+### Initializing a Message
+
+```ObjC
+LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:LGChatMessage.SentByUserString];
+
+or
+
+LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:LGChatMessage.SentByUserString timeStamp: someTimestamp];
+```
+
+### Stylization Options
+
+#### Styling the Chat Input
+
+```ObjC
+- (void)styleChatInput
+{
+    [LGChatInput setAppearanceBackgroundColor:<#UIColor#>];
+    [LGChatInput setAppearanceIncludeBlur:<#Bool#>];
+    [LGChatInput setAppearanceTextViewFont:<#UIFont#>];
+    [LGChatInput setAppearanceTextViewTextColor:<#UIColor#>];
+    [LGChatInput setAppearanceTintColor:<#UIColor#>];
+    [LGChatInput setAppearanceTextViewBackgroundColor:<#UIColor#>];
 }
 ```
 
-
-### Customization Options
+#### Styling the Message Cell (more coming)
 
 ```ObjC
-/*!
- The color of the user's chat bubbles
- */
-@property (strong, nonatomic) UIColor * userBubbleColor;
-/*!
- The color of the opponent's chat bubbles
- */
-@property (strong, nonatomic) UIColor * opponentBubbleColor;
-/*!
- Change Overall Tint (send btn active and top bar text/icons) 
- */
-@property (strong, nonatomic) UIColor * tintColor;
-
-/*!
- The img to use for the opponent - Can be nil
- */
-@property (strong, nonatomic) UIImage * opponentImg;
-/*!
- To set the title
- */
-@property (strong, nonatomic) NSString * chatTitle;
+- (void)styleMessageCell
+{
+    [LGChatMessageCell setAppearanceFont:<#UIFont#>];
+    [LGChatMessageCell setAppearanceOpponentColor:[<#UIColor#>];
+    [LGChatMessageCell setAppearanceUserColor:<#UIColor#>];
+}
 ```
+
+<!--
+
+***** COMING SOON *****
+
 ###Status Notifications
 
 You can run these if you'd like to notify the user that their connection to the server is inactive.  Call isOffline to show the notification, call isOnline to hide it.  It is safe to call these repeatedly.
@@ -148,26 +120,4 @@ You can run these if you'd like to notify the user that their connection to the 
 - (void) isOnline;
 ```
 
-####Storyboard Support
-
-Storyboard support is currently available <a href="https://github.com/LoganWright/SimpleChat/tree/Storyboards">here!</a>
-
-####NavigationController Support
-
-Navigation controller support is currently available <a href="https://github.com/LoganWright/SimpleChat/tree/NavigationController">here!</a>
-
-If you're using a NavigationController, make sure to set:
-
-```ObjC
-_chatController.isNavigationControllerVersion = YES;
-```
-
-
-<h3> CHANGELOG </h3>
-
-v1.0.1 - 1 April 2014
-
-- Fixed Japanese / Chinese Keyboard Issue
-- Changed tintColor property to be more intuitive
-- Changed new message delegate to package messages as dictionaries
-
+-->

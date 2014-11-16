@@ -34,16 +34,45 @@
 
 - (void)handleTap:(UITapGestureRecognizer *)tap
 {
-    LGChatController *chatController = [LGChatController new];
-    chatController.opponentImage = [UIImage imageNamed:@"User"];
-    chatController.title = @"SimpleChat";
-    chatController.delegate = self;
-    [self.navigationController pushViewController:chatController animated:YES];}
+    [self launchChatController];
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Styling
+
+//- (void)styleChatInput
+//{
+//    [LGChatInput setAppearanceBackgroundColor:<#UIColor#>];
+//    [LGChatInput setAppearanceIncludeBlur:<#Bool#>];
+//    [LGChatInput setAppearanceTextViewFont:<#UIFont#>];
+//    [LGChatInput setAppearanceTextViewTextColor:<#UIColor#>];
+//    [LGChatInput setAppearanceTintColor:<#UIColor#>];
+//    [LGChatInput setAppearanceTextViewBackgroundColor:<#UIColor#>];
+//}
+
+//- (void)styleMessageCell
+//{
+//    [LGChatMessageCell setAppearanceFont:<#UIFont#>];
+//    [LGChatMessageCell setAppearanceOpponentColor:[<#UIColor#>];
+//    [LGChatMessageCell setAppearanceUserColor:<#UIColor#>];
+//}
+
+#pragma mark - Launch Chat Controller
+
+- (void)launchChatController
+{
+    LGChatController *chatController = [LGChatController new];
+    chatController.opponentImage = [UIImage imageNamed:@"User"];
+    chatController.title = @"Simple Chat";
+    LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:LGChatMessage.SentByUserString];
+    chatController.messages = @[helloWorld]; // Pass your messages here.
+    chatController.delegate = self;
+    [self.navigationController pushViewController:chatController animated:YES];
 }
 
 #pragma mark - LGChatControllerDelegate

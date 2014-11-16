@@ -56,8 +56,17 @@ class LGChatMessage : NSObject {
         self.content = content
     }
     
-    // For ObjC Initialization
-    convenience init (content: String, sentByString: String, timeStamp: NSTimeInterval? = nil) {
+    // MARK: ObjC Compatibility
+    
+    convenience init (content: String, sentByString: String) {
+        if let sentBy = SentBy(rawValue: sentByString) {
+            self.init(content: content, sentBy: sentBy, timeStamp: nil)
+        } else {
+            fatalError("LGChatMessage.FatalError : Initialization : Incompatible string set to SentByString!")
+        }
+    }
+    
+    convenience init (content: String, sentByString: String, timeStamp: NSTimeInterval) {
         if let sentBy = SentBy(rawValue: sentByString) {
             self.init(content: content, sentBy: sentBy, timeStamp: timeStamp)
         } else {
@@ -519,7 +528,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
         Appearance.textViewTextColor = textColor
     }
     
-    class func setTextViewBackgroundColor(color: UIColor) {
+    class func setAppearanceTextViewBackgroundColor(color: UIColor) {
         Appearance.textViewBackgroundColor = color
     }
     
