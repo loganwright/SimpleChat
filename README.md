@@ -8,16 +8,6 @@
 
 #SimpleChat
 
-#`<Notice>`:
-
-This control is currently undergoing some changes to address problems with iOS 8, larger screen sizes, and some other general bugs.  I will rework this readme once the redesign enters beta / production, but right now I consider development to be in more of an Alpha stage.  You can follow the current progress here:
-
-https://github.com/LoganWright/SimpleChat/tree/SwiftRedesign
-
-I will update instructions to use the new implementation once it is more finished and I appreciate your patience.  I am working to finish things as quickly as possible with my current schedule.  In the meantime, please remember that I don't get any compensation for this, and I am doing my best to develop this in my freetime.  Any contributions are greatly appreciated!
-
-#`</Notice>`
-
 An easy to use bubble chat UI as an alternative to the traditional iOS talk bubbles.
 
 <p align="center">
