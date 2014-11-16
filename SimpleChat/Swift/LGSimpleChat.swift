@@ -191,7 +191,7 @@ class LGChatMessageCell : UITableViewCell {
             
         case .User:
             self.opponentImageView.hidden = true
-            self.textView.center.x = CGRectGetMaxX(self.contentView.bounds) - targetX
+            self.textView.center.x = CGRectGetWidth(self.bounds) - targetX
             self.textView.center.y = halfTextViewHeight
             self.textView.layer.borderColor = Appearance.userColor.CGColor
         }
@@ -310,24 +310,74 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     
     private func listenForKeyboardChanges() {
         let defaultCenter = NSNotificationCenter.defaultCenter()
-        defaultCenter.addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+            defaultCenter.addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+            defaultCenter.addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        } else {
+            defaultCenter.addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        }
     }
     
     private func unregisterKeyboardObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    // MARK: iOS 8 Keyboard Animations
+    
     func keyboardWillChangeFrame(note: NSNotification) {
+        
+        /*
+        NOTE: For iOS 8 Only, will cause autolayout issues in iOS 7
+        */
+        
         let keyboardAnimationDetail = note.userInfo!
         let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
         let keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
-        let keyboardHeight = CGRectGetHeight(keyboardFrame)
         let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
         
         self.tableView.scrollEnabled = false
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.layoutIfNeeded()
         self.bottomChatInputConstraint.constant = -(CGRectGetHeight(self.view.bounds) - CGRectGetMinY(keyboardFrame))
+        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            self.scrollToBottom()
+            }, completion: {(finished) -> () in
+                self.tableView.scrollEnabled = true
+                self.tableView.decelerationRate = UIScrollViewDecelerationRateNormal
+        })
+    }
+    
+    // MARK: iOS 7 Compatibility Keyboard Animations
+    
+    func keyboardWillShow(note: NSNotification) {
+        let keyboardAnimationDetail = note.userInfo!
+        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
+        let keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
+        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
+        let keyboardHeight = UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation) ? CGRectGetHeight(keyboardFrame) : CGRectGetWidth(keyboardFrame)
+        
+        self.tableView.scrollEnabled = false
+        self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
+        self.view.layoutIfNeeded()
+        self.bottomChatInputConstraint.constant = -keyboardHeight
+        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            self.scrollToBottom()
+            }, completion: {(finished) -> () in
+                self.tableView.scrollEnabled = true
+                self.tableView.decelerationRate = UIScrollViewDecelerationRateNormal
+        })
+    }
+    
+    func keyboardWillHide(note: NSNotification) {
+        let keyboardAnimationDetail = note.userInfo!
+        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
+        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
+        self.tableView.scrollEnabled = false
+        self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
+        self.view.layoutIfNeeded()
+        self.bottomChatInputConstraint.constant = 0.0
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.scrollToBottom()
