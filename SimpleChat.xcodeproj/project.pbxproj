@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		806254871A16AA32005A2FD1 /* LGSimpleChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806254861A16AA32005A2FD1 /* LGSimpleChat.swift */; };
+		800D4D1A1A183A9E00F5CB14 /* LGSimpleChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D181A183A9E00F5CB14 /* LGSimpleChat.swift */; };
+		800D4D1B1A183A9E00F5CB14 /* License in Resources */ = {isa = PBXBuildFile; fileRef = 800D4D191A183A9E00F5CB14 /* License */; };
+		800D4D1F1A183AD600F5CB14 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D1E1A183AD600F5CB14 /* ViewController.m */; };
+		800D4D221A183AF000F5CB14 /* SwiftExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800D4D211A183AF000F5CB14 /* SwiftExampleViewController.swift */; };
 		809B506B18D7B55B0032A48D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506A18D7B55B0032A48D /* Foundation.framework */; };
 		809B506D18D7B55B0032A48D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506C18D7B55B0032A48D /* CoreGraphics.framework */; };
 		809B506F18D7B55B0032A48D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506E18D7B55B0032A48D /* UIKit.framework */; };
@@ -15,14 +18,12 @@
 		809B507718D7B55B0032A48D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B507618D7B55B0032A48D /* main.m */; };
 		809B507B18D7B55B0032A48D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B507A18D7B55B0032A48D /* AppDelegate.m */; };
 		809B507E18D7B55B0032A48D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 809B507C18D7B55B0032A48D /* Main.storyboard */; };
-		809B508118D7B55B0032A48D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B508018D7B55B0032A48D /* ViewController.m */; };
 		809B508318D7B55B0032A48D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 809B508218D7B55B0032A48D /* Images.xcassets */; };
 		809B508A18D7B55B0032A48D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B508918D7B55B0032A48D /* XCTest.framework */; };
 		809B508B18D7B55B0032A48D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506A18D7B55B0032A48D /* Foundation.framework */; };
 		809B508C18D7B55B0032A48D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809B506E18D7B55B0032A48D /* UIKit.framework */; };
 		809B509418D7B55B0032A48D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 809B509218D7B55B0032A48D /* InfoPlist.strings */; };
 		809B509618D7B55B0032A48D /* SimpleChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 809B509518D7B55B0032A48D /* SimpleChatTests.m */; };
-		809B51A618DABBA90032A48D /* License in Resources */ = {isa = PBXBuildFile; fileRef = 809B51A518DABBA90032A48D /* License */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,8 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		800D4D181A183A9E00F5CB14 /* LGSimpleChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LGSimpleChat.swift; sourceTree = "<group>"; };
+		800D4D191A183A9E00F5CB14 /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License; sourceTree = "<group>"; };
+		800D4D1D1A183AD600F5CB14 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		800D4D1E1A183AD600F5CB14 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		800D4D211A183AF000F5CB14 /* SwiftExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExampleViewController.swift; sourceTree = "<group>"; };
 		806254851A16AA32005A2FD1 /* SimpleChat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleChat-Bridging-Header.h"; sourceTree = "<group>"; };
-		806254861A16AA32005A2FD1 /* LGSimpleChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LGSimpleChat.swift; path = Swift/LGSimpleChat.swift; sourceTree = "<group>"; };
 		809B506718D7B55B0032A48D /* SimpleChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		809B506A18D7B55B0032A48D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		809B506C18D7B55B0032A48D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -49,15 +54,12 @@
 		809B507918D7B55B0032A48D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		809B507A18D7B55B0032A48D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		809B507D18D7B55B0032A48D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		809B507F18D7B55B0032A48D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		809B508018D7B55B0032A48D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		809B508218D7B55B0032A48D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		809B508818D7B55B0032A48D /* SimpleChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		809B508918D7B55B0032A48D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		809B509118D7B55B0032A48D /* SimpleChatTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleChatTests-Info.plist"; sourceTree = "<group>"; };
 		809B509318D7B55B0032A48D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		809B509518D7B55B0032A48D /* SimpleChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleChatTests.m; sourceTree = "<group>"; };
-		809B51A518DABBA90032A48D /* License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = License; path = ChatController/License; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,12 +86,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		806254841A16AA07005A2FD1 /* Swift */ = {
+		800D4D171A183A9E00F5CB14 /* LGSimpleChat */ = {
 			isa = PBXGroup;
 			children = (
-				806254861A16AA32005A2FD1 /* LGSimpleChat.swift */,
+				800D4D181A183A9E00F5CB14 /* LGSimpleChat.swift */,
+				800D4D191A183A9E00F5CB14 /* License */,
 			);
-			name = Swift;
+			path = LGSimpleChat;
+			sourceTree = "<group>";
+		};
+		800D4D1C1A183AD600F5CB14 /* ViewControllerExample */ = {
+			isa = PBXGroup;
+			children = (
+				800D4D1D1A183AD600F5CB14 /* ViewController.h */,
+				800D4D1E1A183AD600F5CB14 /* ViewController.m */,
+			);
+			path = ViewControllerExample;
+			sourceTree = "<group>";
+		};
+		800D4D201A183AF000F5CB14 /* SwiftViewControllerExample */ = {
+			isa = PBXGroup;
+			children = (
+				800D4D211A183AF000F5CB14 /* SwiftExampleViewController.swift */,
+			);
+			path = SwiftViewControllerExample;
 			sourceTree = "<group>";
 		};
 		809B505E18D7B55B0032A48D = {
@@ -125,14 +145,12 @@
 		809B507018D7B55B0032A48D /* SimpleChat */ = {
 			isa = PBXGroup;
 			children = (
-				806254851A16AA32005A2FD1 /* SimpleChat-Bridging-Header.h */,
-				809B51A518DABBA90032A48D /* License */,
-				806254841A16AA07005A2FD1 /* Swift */,
+				800D4D171A183A9E00F5CB14 /* LGSimpleChat */,
+				800D4D1C1A183AD600F5CB14 /* ViewControllerExample */,
+				800D4D201A183AF000F5CB14 /* SwiftViewControllerExample */,
 				809B507918D7B55B0032A48D /* AppDelegate.h */,
 				809B507A18D7B55B0032A48D /* AppDelegate.m */,
 				809B507C18D7B55B0032A48D /* Main.storyboard */,
-				809B507F18D7B55B0032A48D /* ViewController.h */,
-				809B508018D7B55B0032A48D /* ViewController.m */,
 				809B508218D7B55B0032A48D /* Images.xcassets */,
 				809B507118D7B55B0032A48D /* Supporting Files */,
 			);
@@ -146,6 +164,7 @@
 				809B507318D7B55B0032A48D /* InfoPlist.strings */,
 				809B507618D7B55B0032A48D /* main.m */,
 				809B507818D7B55B0032A48D /* SimpleChat-Prefix.pch */,
+				806254851A16AA32005A2FD1 /* SimpleChat-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -244,9 +263,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				809B51A618DABBA90032A48D /* License in Resources */,
 				809B508318D7B55B0032A48D /* Images.xcassets in Resources */,
 				809B507518D7B55B0032A48D /* InfoPlist.strings in Resources */,
+				800D4D1B1A183A9E00F5CB14 /* License in Resources */,
 				809B507E18D7B55B0032A48D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,10 +285,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				809B508118D7B55B0032A48D /* ViewController.m in Sources */,
-				806254871A16AA32005A2FD1 /* LGSimpleChat.swift in Sources */,
+				800D4D1A1A183A9E00F5CB14 /* LGSimpleChat.swift in Sources */,
 				809B507B18D7B55B0032A48D /* AppDelegate.m in Sources */,
 				809B507718D7B55B0032A48D /* main.m in Sources */,
+				800D4D1F1A183AD600F5CB14 /* ViewController.m in Sources */,
+				800D4D221A183AF000F5CB14 /* SwiftExampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

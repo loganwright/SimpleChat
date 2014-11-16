@@ -1,26 +1,35 @@
 SimpleChat
 ==========
 
+#Welcome To SimpleChat 2.0!
+
+##New Features
+
+1. Completely redesigned implementation in Swift
+2. Supports iOS 7.1+
+3. New Screen Size Support
+
+#SimpleChat
+
 An easy to use bubble chat UI as an alternative to the traditional iOS talk bubbles.
 
 <p align="center">
-  <img src="http://i.stack.imgur.com/OrRIO.png?raw=true"><img />
+  <!-- <img src="http://i.stack.imgur.com/OrRIO.png?raw=true"><img /> -->
 </p>
 
 
-###QuickStart
+###Getting Started
 
-####1. Add `LGSimpleChat.swift` To Xcode
+####1. Add The `LGSimpleChat` Folder To Xcode
 
-- Drag `LGSimpleChat.swift` into your Xcode project
+- Drag the folder into your Xcode project
 - Make sure "Copy items into destination group's folder (if needed)" is selected
 
-####Step 2: Your ViewController.h file
-
-#####ObjC
+####2. ObjC
 
 - Import `<#YourProductModule#>-Swift.h`
 - Conform to `LGChatControllerDelegate`
+- Call `[self launchChatController]` (specified below)
 
 In `<#YourViewController#>.m`
 
@@ -41,7 +50,8 @@ In `<#YourViewController#>.m`
     LGChatController *chatController = [LGChatController new];
     chatController.opponentImage = [UIImage imageNamed:@"<#YourImageName#>"];
     chatController.title = @"<#YourTitle#>";
-    chatController.messages = @[]; // Pass your messages here.
+    LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:[LGChatMessage SentByUserString]];
+    chatController.messages = @[helloWorld]; // Pass your messages here.
     chatController.delegate = self;
     [self.navigationController pushViewController:chatController animated:YES];
 }
@@ -68,16 +78,16 @@ In `<#YourViewController#>.m`
 ### Initializing a Message
 
 ```ObjC
-LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:LGChatMessage.SentByUserString];
+LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:[LGChatMessage SentByUserString]];
 
 or
 
-LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:LGChatMessage.SentByUserString timeStamp: someTimestamp];
+LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:[LGChatMessage SentByOpponentString] timeStamp: someTimestamp];
 ```
 
 ### Stylization Options
 
-#### Styling the Chat Input
+#### Chat Input
 
 ```ObjC
 - (void)styleChatInput
@@ -91,7 +101,7 @@ LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World
 }
 ```
 
-#### Styling the Message Cell (more coming)
+#### Message Cell
 
 ```ObjC
 - (void)styleMessageCell
@@ -101,6 +111,91 @@ LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World
     [LGChatMessageCell setAppearanceUserColor:<#UIColor#>];
 }
 ```
+
+####2. Swift
+
+- Import `<#YourProductModule#>-Swift.h`
+- Conform to `LGChatControllerDelegate`
+- Call `[self launchChatController]` (specified below)
+
+In `<#YourViewController#>.swift`
+
+```Swift
+
+import UIKit
+
+class SwiftExampleViewController: UIViewController, LGChatControllerDelegate {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
+    // MARK: Launch Chat Controller
+
+    func launchChatController() {
+        let chatController = LGChatController()
+        chatController.opponentImage = UIImage(named: "User")
+        chatController.title = "Simple Chat"
+        let helloWorld = LGChatMessage(content: "Hello World!", sentBy: .User)
+        chatController.messages = [helloWorld]
+        chatController.delegate = self
+        self.navigationController?.pushViewController(chatController, animated: true)
+    }
+
+    // MARK: LGChatControllerDelegate
+
+    func chatController(chatController: LGChatController, didAddNewMessage message: LGChatMessage) {
+        println("Did Add Message: \(message.content)")
+    }
+
+    func shouldChatController(chatController: LGChatController, addMessage message: LGChatMessage) -> Bool {
+        /*
+        Use this space to prevent sending a message, or to alter a message.  For example, you might want to hold a message until its successfully uploaded to a server.
+        */
+        return true
+    }
+
+}
+
+```
+
+### Initializing a Message
+
+```ObjC
+let message = LGChatMessage(content: "Hello World!", sentBy: .User)
+
+-- or --
+
+let message = LGChatMessage(content: "Hello World!", sentBy: .Opponent, timeStamp: someTimestamp)
+```
+
+### Stylization Options
+
+#### Chat Input
+
+```Swift
+func stylizeChatInput() {
+    LGChatInput.Appearance.backgroundColor = <#UIColor#>
+    LGChatInput.Appearance.includeBlur = <#Bool#>
+    LGChatInput.Appearance.textViewFont = <#UIFont#>
+    LGChatInput.Appearance.textViewTextColor = <#UIColor#>
+    LGChatInput.Appearance.tintColor = <#UIColor#>
+    LGChatInput.Appearance.textViewBackgroundColor = <#UIColor#>
+}
+```
+
+#### Message Cell
+
+```ObjC
+func stylizeMessageCell() {
+    LGChatMessageCell.Appearance.font = <#UIFont#>
+    LGChatMessageCell.Appearance.opponentColor = <#UIColor#>
+    LGChatMessageCell.Appearance.userColor = <#UIColor#>
+}
+```
+
+
+
 
 <!--
 

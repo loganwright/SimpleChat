@@ -69,7 +69,7 @@
     LGChatController *chatController = [LGChatController new];
     chatController.opponentImage = [UIImage imageNamed:@"User"];
     chatController.title = @"Simple Chat";
-    LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World" sentByString:LGChatMessage.SentByUserString];
+    LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World!" sentByString:[LGChatMessage SentByUserString]];
     chatController.messages = @[helloWorld]; // Pass your messages here.
     chatController.delegate = self;
     [self.navigationController pushViewController:chatController animated:YES];
@@ -87,7 +87,7 @@
     /*
      This is implemented just for demonstration so the sent by is randomized.  This way, the full functionality can be demonstrated.
      */
-    message.sentByString = arc4random_uniform(2) == 0 ? LGChatMessage.SentByOpponentString : LGChatMessage.SentByUserString;
+    message.sentByString = arc4random_uniform(2) == 0 ? [LGChatMessage SentByOpponentString] : [LGChatMessage SentByUserString];
     return YES;
 }
 

@@ -6,6 +6,12 @@
 //  Copyright (c) 2014 Logan Wright. All rights reserved.
 //
 
+/*
+Mozilla Public License
+Version 2.0
+https://tldrlegal.com/license/mozilla-public-license-2.0-(mpl-2)
+*/
+
 import UIKit
 
 // MARK: Message
@@ -118,6 +124,7 @@ class LGChatMessageCell : UITableViewCell {
             self.font = Appearance.font
             self.scrollEnabled = false
             self.editable = false
+            self.
             self.textContainerInset = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
             self.layer.cornerRadius = 15
             self.layer.borderWidth = 2.0
@@ -213,6 +220,7 @@ class LGChatMessageCell : UITableViewCell {
     optional func shouldChatController(chatController: LGChatController, addMessage message: LGChatMessage) -> Bool
     optional func chatController(chatController: LGChatController, didAddNewMessage message: LGChatMessage)
 }
+
 class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataSource, LGChatInputDelegate {
     
     // MARK: Constants
@@ -770,6 +778,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
         /*
         There is an issue when calling `sizeThatFits` on self that results in really weird drawing issues with aligning line breaks ("\n").  For that reason, we have a textView whose job it is to size the textView. It's excess, but apparently necessary.  If there's been an update to the system and this is no longer necessary, or if you find a better solution. Please remove it and submit a pull request as I'd rather not have it.
         */
+        
         sizingTextView.text = self.text
         let targetSize = sizingTextView.sizeThatFits(maxSize)
         var targetHeight = targetSize.height
@@ -792,6 +801,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
         /*
         If the caretHeight and the inset padding is greater than the total bounds then we are on the first line and aligning will cause bouncing.
         */
+        
         let caretHeightPlusInsets = CGRectGetHeight(caretRect) + self.textContainerInset.top + self.textContainerInset.bottom
         if caretHeightPlusInsets < CGRectGetHeight(self.bounds) {
             var overflow: CGFloat = 0.0
@@ -811,7 +821,9 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     }
     
     func textViewDidChange(textView: UITextView) {
+        
         // TODO: Possibly filter spaces and newlines
+        
         self.isValid = countElements(textView.text) > 0
     }
 }
