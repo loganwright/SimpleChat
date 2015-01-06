@@ -354,7 +354,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         self.tableView.scrollEnabled = false
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.layoutIfNeeded()
-        self.bottomChatInputConstraint.constant = -(CGRectGetHeight(self.view.bounds) - CGRectGetMinY(keyboardFrame))
+        self.bottomChatInputConstraint.constant = -(CGRectGetHeight(UIScreen.mainScreen().bounds) - CGRectGetMinY(keyboardFrame))
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.scrollToBottom()
