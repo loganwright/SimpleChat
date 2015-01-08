@@ -348,13 +348,20 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         
         let keyboardAnimationDetail = note.userInfo!
         let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
-        let keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
+        var keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
+        if let window = self.view.window {
+            keyboardFrame = window.convertRect(keyboardFrame, toView: self.view)
+        }
         let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
         
         self.tableView.scrollEnabled = false
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.layoutIfNeeded()
-        self.bottomChatInputConstraint.constant = -(CGRectGetHeight(UIScreen.mainScreen().bounds) - CGRectGetMinY(keyboardFrame))
+        var chatInputOffset = -(CGRectGetHeight(self.view.bounds) - CGRectGetMinY(keyboardFrame))
+        if chatInputOffset > 0 {
+            chatInputOffset = 0
+        }
+        self.bottomChatInputConstraint.constant = chatInputOffset
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.scrollToBottom()
