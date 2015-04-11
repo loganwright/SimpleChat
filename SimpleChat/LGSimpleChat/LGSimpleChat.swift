@@ -112,7 +112,7 @@ class LGChatMessageCell : UITableViewCell {
     // MARK: Message Bubble TextView
     
     private lazy var textView: MessageBubbleTextView = {
-        let textView = MessageBubbleTextView()
+        let textView = MessageBubbleTextView(frame: CGRectZero, textContainer: nil)
         self.contentView.addSubview(textView)
         return textView
         }()
@@ -153,7 +153,7 @@ class LGChatMessageCell : UITableViewCell {
         opponentImageView.layer.masksToBounds = true
         self.contentView.addSubview(opponentImageView)
         return opponentImageView
-    }()
+        }()
     
     // MARK: Sizing
     
@@ -242,7 +242,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     
     private let sizingCell = LGChatMessageCell()
     private let tableView: UITableView = UITableView()
-    private let chatInput = LGChatInput()
+    private let chatInput = LGChatInput(frame: CGRectZero)
     private var bottomChatInputConstraint: NSLayoutConstraint!
     
     
@@ -347,12 +347,12 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         */
         
         let keyboardAnimationDetail = note.userInfo!
-        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
-        var keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
+        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
+        var keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         if let window = self.view.window {
             keyboardFrame = window.convertRect(keyboardFrame, toView: self.view)
         }
-        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
+        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as! UInt
         
         self.tableView.scrollEnabled = false
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
@@ -375,9 +375,9 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     
     func keyboardWillShow(note: NSNotification) {
         let keyboardAnimationDetail = note.userInfo!
-        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
-        let keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
-        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
+        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
+        let keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as! UInt
         let keyboardHeight = UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation) ? CGRectGetHeight(keyboardFrame) : CGRectGetWidth(keyboardFrame)
         
         self.tableView.scrollEnabled = false
@@ -395,8 +395,8 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     
     func keyboardWillHide(note: NSNotification) {
         let keyboardAnimationDetail = note.userInfo!
-        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as NSTimeInterval
-        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as UInt
+        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
+        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as! UInt
         self.tableView.scrollEnabled = false
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.layoutIfNeeded()
@@ -489,7 +489,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as LGChatMessageCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as! LGChatMessageCell
         let message = self.messages[indexPath.row]
         cell.opponentImageView.image = message.sentBy == .Opponent ? self.opponentImage : nil
         cell.setupWithMessage(message)
@@ -553,8 +553,8 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     
     // MARK: Private Properties
     
-    private let textView = LGStretchyTextView()
-    private let sendButton = UIButton.buttonWithType(.System) as UIButton
+    private let textView = LGStretchyTextView(frame: CGRectZero, textContainer: nil)
+    private let sendButton = UIButton.buttonWithType(.System) as! UIButton
     private let blurredBackgroundView: UIToolbar = UIToolbar()
     private var heightConstraint: NSLayoutConstraint!
     private var sendButtonHeightConstraint: NSLayoutConstraint!
@@ -659,7 +659,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     
     func stretchyTextViewDidChangeSize(textView: LGStretchyTextView) {
         let textViewHeight = CGRectGetHeight(textView.bounds)
-        if countElements(textView.text) == 0 {
+        if count(textView.text) == 0 {
             self.sendButtonHeightConstraint.constant = textViewHeight
         }
         let targetConstant = textViewHeight + textViewInsets.top + textViewInsets.bottom
@@ -674,7 +674,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     // MARK: Button Presses
     
     func sendButtonPressed(sender: UIButton) {
-        if countElements(self.textView.text) > 0 {
+        if count(self.textView.text) > 0 {
             self.delegate?.chatInput(self, didSendMessage: self.textView.text)
             self.textView.text = ""
         }
@@ -830,18 +830,6 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
         
         // TODO: Possibly filter spaces and newlines
         
-        self.isValid = countElements(textView.text) > 0
+        self.isValid = count(textView.text) > 0
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
