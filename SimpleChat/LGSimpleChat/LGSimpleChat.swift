@@ -45,7 +45,7 @@ class LGChatMessage : NSObject {
             if let sentBy = SentBy(rawValue: newValue) {
                 self.sentBy = sentBy
             } else {
-                println("LGChatMessage.FatalError : Property Set : Incompatible string set to SentByString!")
+                print("LGChatMessage.Error : Property Set : Incompatible string set to SentByString!")
             }
         }
     }
@@ -301,14 +301,14 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     private func setupLayoutConstraints() {
-        chatInput.setTranslatesAutoresizingMaskIntoConstraints(false)
-        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        chatInput.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addConstraints(self.chatInputConstraints())
         self.view.addConstraints(self.tableViewConstraints())
     }
     
     private func chatInputConstraints() -> [NSLayoutConstraint] {
-        self.bottomChatInputConstraint = NSLayoutConstraint(item: chatInput, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        self.bottomChatInputConstraint = NSLayoutConstraint(item: chatInput, attribute: .Bottom, relatedBy: .Equal, toItem: self.bottomLayoutGuide, attribute: .Top, multiplier: 1.0, constant: 0)
         let leftConstraint = NSLayoutConstraint(item: chatInput, attribute: .Left, relatedBy: .Equal, toItem: self.view, attribute: .Left, multiplier: 1.0, constant: 0.0)
         let rightConstraint = NSLayoutConstraint(item: chatInput, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1.0, constant: 0.0)
         return [leftConstraint, self.bottomChatInputConstraint, rightConstraint]
@@ -326,26 +326,14 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     
     private func listenForKeyboardChanges() {
         let defaultCenter = NSNotificationCenter.defaultCenter()
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-            defaultCenter.addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-            defaultCenter.addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        } else {
-            defaultCenter.addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
-        }
+        defaultCenter.addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
     private func unregisterKeyboardObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
-    // MARK: iOS 8 Keyboard Animations
-    
+ 
     func keyboardWillChangeFrame(note: NSNotification) {
-        
-        /*
-        NOTE: For iOS 8 Only, will cause autolayout issues in iOS 7
-        */
-        
         let keyboardAnimationDetail = note.userInfo!
         let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
         var keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
@@ -357,51 +345,12 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
         self.tableView.scrollEnabled = false
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.layoutIfNeeded()
-        var chatInputOffset = -(CGRectGetHeight(self.view.bounds) - CGRectGetMinY(keyboardFrame))
+        var chatInputOffset = -((CGRectGetHeight(self.view.bounds) - self.bottomLayoutGuide.length) - CGRectGetMinY(keyboardFrame))
         if chatInputOffset > 0 {
             chatInputOffset = 0
         }
         self.bottomChatInputConstraint.constant = chatInputOffset
-        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            self.scrollToBottom()
-            }, completion: {(finished) -> () in
-                self.tableView.scrollEnabled = true
-                self.tableView.decelerationRate = UIScrollViewDecelerationRateNormal
-        })
-    }
-    
-    // MARK: iOS 7 Compatibility Keyboard Animations
-    
-    func keyboardWillShow(note: NSNotification) {
-        let keyboardAnimationDetail = note.userInfo!
-        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
-        let keyboardFrame = (keyboardAnimationDetail[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as! UInt
-        let keyboardHeight = UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation) ? CGRectGetHeight(keyboardFrame) : CGRectGetWidth(keyboardFrame)
-        
-        self.tableView.scrollEnabled = false
-        self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
-        self.view.layoutIfNeeded()
-        self.bottomChatInputConstraint.constant = -keyboardHeight
-        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            self.scrollToBottom()
-            }, completion: {(finished) -> () in
-                self.tableView.scrollEnabled = true
-                self.tableView.decelerationRate = UIScrollViewDecelerationRateNormal
-        })
-    }
-    
-    func keyboardWillHide(note: NSNotification) {
-        let keyboardAnimationDetail = note.userInfo!
-        let duration = keyboardAnimationDetail[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
-        let animationCurve = keyboardAnimationDetail[UIKeyboardAnimationCurveUserInfoKey] as! UInt
-        self.tableView.scrollEnabled = false
-        self.tableView.decelerationRate = UIScrollViewDecelerationRateFast
-        self.view.layoutIfNeeded()
-        self.bottomChatInputConstraint.constant = 0.0
-        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(animationCurve), animations: { () -> Void in
+        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: animationCurve), animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.scrollToBottom()
             }, completion: {(finished) -> () in
@@ -489,7 +438,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as! LGChatMessageCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as! LGChatMessageCell
         let message = self.messages[indexPath.row]
         cell.opponentImageView.image = message.sentBy == .Opponent ? self.opponentImage : nil
         cell.setupWithMessage(message)
@@ -554,7 +503,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     // MARK: Private Properties
     
     private let textView = LGStretchyTextView(frame: CGRectZero, textContainer: nil)
-    private let sendButton = UIButton.buttonWithType(.System) as! UIButton
+    private let sendButton = UIButton(type: .System)
     private let blurredBackgroundView: UIToolbar = UIToolbar()
     private var heightConstraint: NSLayoutConstraint!
     private var sendButtonHeightConstraint: NSLayoutConstraint!
@@ -574,7 +523,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     // MARK: Setup
     
     func setup() {
-        self.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.setupSendButton()
         self.setupSendButtonConstraints()
         self.setupTextView()
@@ -608,8 +557,8 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     }
     
     func setupSendButtonConstraints() {
-        self.sendButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-        self.sendButton.removeConstraints(self.sendButton.constraints())
+        self.sendButton.translatesAutoresizingMaskIntoConstraints = false
+        self.sendButton.removeConstraints(self.sendButton.constraints)
         
         // TODO: Fix so that button height doesn't change on first newLine
         let rightConstraint = NSLayoutConstraint(item: self, attribute: .Right, relatedBy: .Equal, toItem: self.sendButton, attribute: .Right, multiplier: 1.0, constant: textViewInsets.right)
@@ -620,7 +569,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     }
     
     func setupTextViewConstraints() {
-        self.textView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.textView.translatesAutoresizingMaskIntoConstraints = false
         let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.textView, attribute: .Top, multiplier: 1.0, constant: -textViewInsets.top)
         let leftConstraint = NSLayoutConstraint(item: self, attribute: .Left, relatedBy: .Equal, toItem: self.textView, attribute: .Left, multiplier: 1, constant: -textViewInsets.left)
         let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.textView, attribute: .Bottom, multiplier: 1, constant: textViewInsets.bottom)
@@ -635,7 +584,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     }
     
     func setupBlurredBackgroundViewConstraints() {
-        self.blurredBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.blurredBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.blurredBackgroundView, attribute: .Top, multiplier: 1.0, constant: 0)
         let leftConstraint = NSLayoutConstraint(item: self, attribute: .Left, relatedBy: .Equal, toItem: self.blurredBackgroundView, attribute: .Left, multiplier: 1.0, constant: 0)
         let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.blurredBackgroundView, attribute: .Bottom, multiplier: 1.0, constant: 0)
@@ -659,7 +608,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     
     func stretchyTextViewDidChangeSize(textView: LGStretchyTextView) {
         let textViewHeight = CGRectGetHeight(textView.bounds)
-        if count(textView.text) == 0 {
+        if textView.text.characters.count == 0 {
             self.sendButtonHeightConstraint.constant = textViewHeight
         }
         let targetConstant = textViewHeight + textViewInsets.top + textViewInsets.bottom
@@ -674,7 +623,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     // MARK: Button Presses
     
     func sendButtonPressed(sender: UIButton) {
-        if count(self.textView.text) > 0 {
+        if self.textView.text.characters.count > 0 {
             self.delegate?.chatInput(self, didSendMessage: self.textView.text)
             self.textView.text = ""
         }
@@ -711,15 +660,10 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
         }
     }
     
-    private var _isValid = false
-    private var isValid: Bool {
-        get {
-            return _isValid
-        }
-        set {
-            if _isValid != newValue {
-                _isValid = newValue
-                self.stretchyTextViewDelegate?.stretchyTextView?(self, validityDidChange: _isValid)
+    private var isValid: Bool = false {
+        didSet {
+            if isValid != oldValue {
+                stretchyTextViewDelegate?.stretchyTextView?(self, validityDidChange: isValid)
             }
         }
     }
@@ -730,7 +674,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     
     override var contentSize: CGSize {
         didSet {
-            self.resizeAndAlign()
+            resize()
         }
     }
     
@@ -750,7 +694,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     
     override init(frame: CGRect = CGRectZero, textContainer: NSTextContainer? = nil) {
         super.init(frame: frame, textContainer: textContainer);
-        self.setup()
+        setup()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -760,23 +704,16 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     // MARK: Setup
     
     func setup() {
-        self.font = UIFont.systemFontOfSize(17.0)
-        self.textContainerInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
-        self.delegate = self
-    }
-    
-    // MARK: Resize & Align
-    
-    func resizeAndAlign() {
-        self.resize()
-        self.align()
+        font = UIFont.systemFontOfSize(17.0)
+        textContainerInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        delegate = self
     }
     
     // MARK: Sizing
     
     func resize() {
-        self.bounds.size.height = self.targetHeight()
-        self.stretchyTextViewDelegate?.stretchyTextViewDidChangeSize(self)
+        bounds.size.height = self.targetHeight()
+        stretchyTextViewDelegate?.stretchyTextViewDidChangeSize(self)
     }
     
     func targetHeight() -> CGFloat {
@@ -787,7 +724,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
         
         sizingTextView.text = self.text
         let targetSize = sizingTextView.sizeThatFits(maxSize)
-        var targetHeight = targetSize.height
+        let targetHeight = targetSize.height
         let maxHeight = self.maxHeight
         return targetHeight < maxHeight ? targetHeight : maxHeight
     }
@@ -795,8 +732,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     // MARK: Alignment
     
     func align() {
-        
-        let caretRect: CGRect = self.caretRectForPosition(self.selectedTextRange?.end)
+        guard let end = self.selectedTextRange?.end, let caretRect: CGRect = self.caretRectForPosition(end) else { return }
         
         let topOfLine = CGRectGetMinY(caretRect)
         let bottomOfLine = CGRectGetMaxY(caretRect)
@@ -827,9 +763,7 @@ class LGStretchyTextView : UITextView, UITextViewDelegate {
     }
     
     func textViewDidChange(textView: UITextView) {
-        
         // TODO: Possibly filter spaces and newlines
-        
-        self.isValid = count(textView.text) > 0
+        self.isValid = textView.text.characters.count > 0
     }
 }
