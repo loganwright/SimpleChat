@@ -29,6 +29,8 @@ class LGChatMessage : NSObject {
     ObjC can't interact w/ enums properly, so this is used for converting compatible values.
     */
     
+    var color : UIColor? = nil
+    
     class func SentByUserString() -> String {
         return LGChatMessage.SentBy.User.rawValue
     }
@@ -184,6 +186,9 @@ class LGChatMessageCell : UITableViewCell {
         }
         textView.bounds.size = size
         self.styleTextViewForSentBy(message.sentBy)
+        if let color = message.color {
+            self.textView.layer.borderColor = color.CGColor
+        }
         return size
     }
     
