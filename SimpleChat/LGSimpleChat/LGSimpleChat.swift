@@ -35,6 +35,9 @@ class LGChatMessage : NSObject {
     
     var color : UIColor? = nil
     
+    // Set to any string to have a custom Gravatar used as the icon, same string will always have the same icon.
+    var gravatarString : String?
+    
     class func SentByUserString() -> String {
         return LGChatMessage.SentBy.User.rawValue
     }
@@ -90,6 +93,8 @@ class LGChatMessage : NSObject {
 // MARK: Message Cell
 
 class LGChatMessageCell : UITableViewCell {
+    
+    var gravatarString : String?
     
     // MARK: Global MessageCell Appearance Modifier
     
@@ -230,6 +235,9 @@ class LGChatMessageCell : UITableViewCell {
 }
 
 class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataSource, LGChatInputDelegate {
+    var gravatarCache = [ String : UIImage ]()
+    var pendingGravatarLoad = [ String ]()
+    
     
     typealias isOrderedBefore = (LGChatMessage, LGChatMessage) -> Bool
     
@@ -468,7 +476,42 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as! LGChatMessageCell
         let message = self.messages[indexPath.row]
+        cell.gravatarString = message.gravatarString
         cell.opponentImageView.image = message.sentBy == .Opponent ? self.opponentImage : nil
+        if let gravatarString = cell.gravatarString {
+            if let gravatar = gravatarCache[gravatarString] {
+                cell.opponentImageView.image = gravatar
+            }
+            else {
+                if !pendingGravatarLoad.contains(gravatarString) {
+                    pendingGravatarLoad.append(gravatarString)
+                    let gravatarURL = NSURL(string: "https://www.gravatar.com/avatar/\(gravatarString.hash).png?d=retro&size=150")!
+                    let task = NSURLSession.sharedSession().dataTaskWithURL(gravatarURL, completionHandler: { (data, response, error) in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.pendingGravatarLoad.removeObject(gravatarString)
+                            if let data = data, gravatar = UIImage(data: data) {
+                                self.gravatarCache[gravatarString] = gravatar
+                                if let paths = tableView.indexPathsForVisibleRows {
+                                    var reloadPaths = [NSIndexPath]()
+                                    for path in paths {
+                                        if let cell = tableView.cellForRowAtIndexPath(path) as? LGChatMessageCell {
+                                            if cell.gravatarString == gravatarString {
+                                                cell.opponentImageView.image = gravatar
+                                                reloadPaths.append(path)
+                                            }
+                                        }
+                                    }
+                                    if reloadPaths.count > 0 {
+                                        tableView.reloadRowsAtIndexPaths(reloadPaths, withRowAnimation: .Automatic)
+                                    }
+                                }
+                            }
+                        })
+                    })
+                    task.resume()
+                }
+            }
+        }
         cell.setupWithMessage(message)
         return cell;
     }
