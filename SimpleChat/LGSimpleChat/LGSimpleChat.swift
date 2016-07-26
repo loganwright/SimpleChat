@@ -90,6 +90,19 @@ class LGChatMessage : NSObject {
             fatalError("LGChatMessage.FatalError : Initialization : Incompatible string set to SentByString!")
         }
     }
+    
+    override var hashValue: Int {
+        get {
+            return Int.addWithOverflow(Int.addWithOverflow(sentBy.hashValue, (timeStamp ?? 0).hashValue).0, content.hashValue).0
+        }
+    }
+    
+    override func isEqual(object: AnyObject?) -> Bool {
+        guard let object = object as? LGChatMessage else  {
+            return false
+        }
+        return object.hashValue == self.hashValue
+    }
 }
 
 // MARK: Message Cell
@@ -252,6 +265,9 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
             }
         }
     }
+    
+    // Set to true to perform duplicate checking
+    var checkForDuplicates = false
     
     // MARK: Constants
     
@@ -418,7 +434,11 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     // MARK: New messages
     
     func addNewMessage(message: LGChatMessage) {
-        messages += [message]
+        if checkForDuplicates {
+            if messages.contains(message) {
+                return // Dupe
+            }
+        }
         
         if let sort = sort {
             let index = messages.insertionIndexOf(message, isOrderedBefore: sort)
@@ -535,6 +555,15 @@ extension Array {
             }
         }
         return lo // not found, would be inserted at position lo
+    }
+}
+
+extension Array where Element : Equatable {
+    // Remove first collection element that is equal to the given `object`:
+    mutating func removeObject(object : Generator.Element) {
+        if let index = self.indexOf(object) {
+            self.removeAtIndex(index)
+        }
     }
 }
 
