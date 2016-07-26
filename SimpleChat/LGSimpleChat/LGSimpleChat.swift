@@ -254,6 +254,13 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     var pendingGravatarLoad = [ String ]()
     
     
+    // Set this value to filter messages
+    var filter : NSPredicate? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     typealias isOrderedBefore = (LGChatMessage, LGChatMessage) -> Bool
     
     // Set this value to apply sorting
@@ -473,9 +480,17 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     // MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let message = messages[indexPath.row]
+        
+        if let filter = filter {
+            if filter.evaluateWithObject(message) == false {
+                return 0.0 // Filtered
+            }
+        }
+        
         let padding: CGFloat = 10.0
         sizingCell.bounds.size.width = CGRectGetWidth(self.view.bounds)
-        let height = self.sizingCell.setupWithMessage(messages[indexPath.row]).height + padding;
+        let height = self.sizingCell.setupWithMessage(message).height + padding;
         return height
     }
     
@@ -498,6 +513,12 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as! LGChatMessageCell
         let message = self.messages[indexPath.row]
+        cell.hidden = false
+        if let filter = filter {
+            if filter.evaluateWithObject(message) == false {
+                cell.hidden = true
+            }
+        }
         cell.gravatarString = message.gravatarString
         cell.opponentImageView.image = message.sentBy == .Opponent ? self.opponentImage : nil
         if let gravatarString = cell.gravatarString {
