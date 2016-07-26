@@ -29,6 +29,8 @@ class LGChatMessage : NSObject {
     ObjC can't interact w/ enums properly, so this is used for converting compatible values.
     */
     
+    var color : UIColor? = nil
+    
     class func SentByUserString() -> String {
         return LGChatMessage.SentBy.User.rawValue
     }
@@ -184,6 +186,9 @@ class LGChatMessageCell : UITableViewCell {
         }
         textView.bounds.size = size
         self.styleTextViewForSentBy(message.sentBy)
+        if let color = message.color {
+            self.textView.layer.borderColor = color.CGColor
+        }
         return size
     }
     
@@ -326,7 +331,7 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     
     private func listenForKeyboardChanges() {
         let defaultCenter = NSNotificationCenter.defaultCenter()
-        defaultCenter.addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        defaultCenter.addObserver(self, selector: #selector(LGChatController.keyboardWillChangeFrame(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
     private func unregisterKeyboardObservers() {
@@ -360,16 +365,15 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     // MARK: Rotation
-    
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
-        self.tableView.reloadData()
-    }
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
-        UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.scrollToBottom()
-            }, completion: nil)
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animateAlongsideTransition({ (_) in
+            self.tableView.reloadData()
+        }) { (_) in
+            UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                self.scrollToBottom()
+                }, completion: nil)
+        }
+        
     }
     
     // MARK: Scrolling
@@ -551,7 +555,7 @@ class LGChatInput : UIView, LGStretchyTextViewDelegate {
     func setupSendButton() {
         self.sendButton.enabled = false
         self.sendButton.setTitle("Send", forState: .Normal)
-        self.sendButton.addTarget(self, action: "sendButtonPressed:", forControlEvents: .TouchUpInside)
+        self.sendButton.addTarget(self, action: #selector(LGChatInput.sendButtonPressed(_:)), forControlEvents: .TouchUpInside)
         self.sendButton.bounds = CGRect(x: 0, y: 0, width: 40, height: 1)
         self.addSubview(sendButton)
     }
