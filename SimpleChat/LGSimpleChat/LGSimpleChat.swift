@@ -13,6 +13,7 @@ https://tldrlegal.com/license/mozilla-public-license-2.0-(mpl-2)
 */
 
 import UIKit
+import Foundation
 
 // MARK: Message
 
@@ -23,13 +24,21 @@ class LGChatMessage : NSObject {
         case Opponent = "LGChatMessageSentByOpponent"
     }
     
+    // Useful to provide meta data for filtering predicate
+    var userInfo = [ String : AnyObject ]()
+    
     // MARK: ObjC Compatibility
     
     /*
     ObjC can't interact w/ enums properly, so this is used for converting compatible values.
     */
     
-    var color : UIColor? = nil
+    
+    // Custom color for the speech bubble, if nil, will use default
+    var color : UIColor?
+    
+    // Set to any string to have a custom Gravatar used as the icon, same string will always have the same icon.
+    var gravatarString : String?
     
     class func SentByUserString() -> String {
         return LGChatMessage.SentBy.User.rawValue
@@ -81,11 +90,26 @@ class LGChatMessage : NSObject {
             fatalError("LGChatMessage.FatalError : Initialization : Incompatible string set to SentByString!")
         }
     }
+    
+    override var hashValue: Int {
+        get {
+            return Int.addWithOverflow(Int.addWithOverflow(sentBy.hashValue, (timeStamp ?? 0).hashValue).0, content.hashValue).0
+        }
+    }
+    
+    override func isEqual(object: AnyObject?) -> Bool {
+        guard let object = object as? LGChatMessage else  {
+            return false
+        }
+        return object.hashValue == self.hashValue
+    }
 }
 
 // MARK: Message Cell
 
 class LGChatMessageCell : UITableViewCell {
+    
+    var gravatarString : String?
     
     // MARK: Global MessageCell Appearance Modifier
     
@@ -226,6 +250,31 @@ class LGChatMessageCell : UITableViewCell {
 }
 
 class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataSource, LGChatInputDelegate {
+    var gravatarCache = [ String : UIImage ]()
+    var pendingGravatarLoad = [ String ]()
+    
+    
+    // Set this value to filter messages
+    var filter : NSPredicate? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    typealias isOrderedBefore = (LGChatMessage, LGChatMessage) -> Bool
+    
+    // Set this value to apply sorting
+    var sort : isOrderedBefore? {
+        didSet {
+            if let sort = sort {
+                messages.sortInPlace(sort)
+                tableView.reloadData()
+            }
+        }
+    }
+    
+    // Set to true to perform duplicate checking
+    var checkForDuplicates = false
     
     // MARK: Constants
     
@@ -392,7 +441,19 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     // MARK: New messages
     
     func addNewMessage(message: LGChatMessage) {
-        messages += [message]
+        if checkForDuplicates {
+            if messages.contains(message) {
+                return // Dupe
+            }
+        }
+        
+        if let sort = sort {
+            let index = messages.insertionIndexOf(message, isOrderedBefore: sort)
+            messages.insert(message, atIndex: index)
+        }
+        else {
+            messages += [message]
+        }
         tableView.reloadData()
         self.scrollToBottom()
         self.delegate?.chatController?(self, didAddNewMessage: message)
@@ -419,9 +480,17 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     // MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let message = messages[indexPath.row]
+        
+        if let filter = filter {
+            if filter.evaluateWithObject(message) == false {
+                return 0.0 // Filtered
+            }
+        }
+        
         let padding: CGFloat = 10.0
         sizingCell.bounds.size.width = CGRectGetWidth(self.view.bounds)
-        let height = self.sizingCell.setupWithMessage(messages[indexPath.row]).height + padding;
+        let height = self.sizingCell.setupWithMessage(message).height + padding;
         return height
     }
     
@@ -444,11 +513,79 @@ class LGChatController : UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("identifier", forIndexPath: indexPath) as! LGChatMessageCell
         let message = self.messages[indexPath.row]
+        cell.hidden = false
+        if let filter = filter {
+            if filter.evaluateWithObject(message) == false {
+                cell.hidden = true
+            }
+        }
+        cell.gravatarString = message.gravatarString
         cell.opponentImageView.image = message.sentBy == .Opponent ? self.opponentImage : nil
+        if let gravatarString = cell.gravatarString {
+            if let gravatar = gravatarCache[gravatarString] {
+                cell.opponentImageView.image = gravatar
+            }
+            else {
+                if !pendingGravatarLoad.contains(gravatarString) {
+                    pendingGravatarLoad.append(gravatarString)
+                    let gravatarURL = NSURL(string: "https://www.gravatar.com/avatar/\(gravatarString.hash).png?d=retro&size=150")!
+                    let task = NSURLSession.sharedSession().dataTaskWithURL(gravatarURL, completionHandler: { (data, response, error) in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.pendingGravatarLoad.removeObject(gravatarString)
+                            if let data = data, gravatar = UIImage(data: data) {
+                                self.gravatarCache[gravatarString] = gravatar
+                                if let paths = tableView.indexPathsForVisibleRows {
+                                    var reloadPaths = [NSIndexPath]()
+                                    for path in paths {
+                                        if let cell = tableView.cellForRowAtIndexPath(path) as? LGChatMessageCell {
+                                            if cell.gravatarString == gravatarString {
+                                                cell.opponentImageView.image = gravatar
+                                                reloadPaths.append(path)
+                                            }
+                                        }
+                                    }
+                                    if reloadPaths.count > 0 {
+                                        tableView.reloadRowsAtIndexPaths(reloadPaths, withRowAnimation: .Automatic)
+                                    }
+                                }
+                            }
+                        })
+                    })
+                    task.resume()
+                }
+            }
+        }
         cell.setupWithMessage(message)
         return cell;
     }
     
+}
+
+extension Array {
+    func insertionIndexOf(elem: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
+        var lo = 0
+        var hi = self.count - 1
+        while lo <= hi {
+            let mid = (lo + hi)/2
+            if isOrderedBefore(self[mid], elem) {
+                lo = mid + 1
+            } else if isOrderedBefore(elem, self[mid]) {
+                hi = mid - 1
+            } else {
+                return mid // found at position mid
+            }
+        }
+        return lo // not found, would be inserted at position lo
+    }
+}
+
+extension Array where Element : Equatable {
+    // Remove first collection element that is equal to the given `object`:
+    mutating func removeObject(object : Generator.Element) {
+        if let index = self.indexOf(object) {
+            self.removeAtIndex(index)
+        }
+    }
 }
 
 // MARK: Chat Input
