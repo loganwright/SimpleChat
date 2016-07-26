@@ -33,7 +33,9 @@ class LGChatMessage : NSObject {
     ObjC can't interact w/ enums properly, so this is used for converting compatible values.
     */
     
-    var color : UIColor? = nil
+    
+    // Custom color for the speech bubble, if nil, will use default
+    var color : UIColor?
     
     // Set to any string to have a custom Gravatar used as the icon, same string will always have the same icon.
     var gravatarString : String?
