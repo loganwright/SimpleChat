@@ -1,5 +1,7 @@
 #<center>Welcome To SimpleChat 2.0!</center>
 
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=562a9d4a249256010021137c&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/562a9d4a249256010021137c/build/latest)
+
 ##New Features
 
 1. Completely redesigned implementation in Swift
