@@ -1,12 +1,12 @@
-#<center>Welcome To SimpleChat 2.0!</center>
+# <center>Welcome To SimpleChat 2.0!</center>
 
-##New Features
+## New Features
 
 1. Completely redesigned implementation in Swift
 2. Supports iOS 7.1+
 3. New Screen Size Support
 
-#SimpleChat
+# SimpleChat
 
 An easy to use bubble chat UI as an alternative to the traditional iOS talk bubbles.
 
@@ -16,14 +16,14 @@ An easy to use bubble chat UI as an alternative to the traditional iOS talk bubb
 
 <br>
 
-###Getting Started
+### Getting Started
 
-####1. Add The `LGSimpleChat` Folder To Xcode
+#### 1. Add The `LGSimpleChat` Folder To Xcode
 
 - Drag the folder into your Xcode project
 - Make sure "Copy items into destination group's folder (if needed)" is selected
 
-####2. ObjC
+#### 2. ObjC
 
 - Import `<#YourProductModule#>-Swift.h`
 - Conform to `LGChatControllerDelegate`
@@ -110,7 +110,7 @@ LGChatMessage *helloWorld = [[LGChatMessage alloc] initWithContent:@"Hello World
 }
 ```
 
-####2. Swift
+#### 2. Swift
 
 - Import `<#YourProductModule#>-Swift.h`
 - Conform to `LGChatControllerDelegate`
@@ -192,7 +192,7 @@ func stylizeMessageCell() {
 }
 ```
 
-##License
+## License
 
 **You may not claim this code as your own!**
 
@@ -386,7 +386,7 @@ This Source Code Form is “Incompatible With Secondary Licenses”, as defined 
 
 ***** COMING SOON *****
 
-###Status Notifications
+### Status Notifications
 
 You can run these if you'd like to notify the user that their connection to the server is inactive.  Call isOffline to show the notification, call isOnline to hide it.  It is safe to call these repeatedly.
 ```ObjC
